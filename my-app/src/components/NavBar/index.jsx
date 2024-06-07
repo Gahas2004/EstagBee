@@ -20,6 +20,7 @@ import PublicIcon from "@mui/icons-material/Public";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import SearchIcon from "@mui/icons-material/Search";
 import { SearchInput } from "./styles";
+import { yellow } from '@mui/material/colors';
 
 export default function NavBar({ setSearch, search }) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -129,7 +130,7 @@ export default function NavBar({ setSearch, search }) {
         width: "100%",
       }}
     >
-      <AppBar position="static" sx={{ backgroundColor: "#1f1e1e" }}>
+      <AppBar position="static" sx={{ backgroundColor: yellow[800] }}>
         <Toolbar>
           <IconButton
             size="large"
@@ -161,7 +162,7 @@ export default function NavBar({ setSearch, search }) {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "flex", sm: "flex" } }}
           >
-            The Challange SWAPI
+            Estagbee
           </Typography>
           {isMobile ? (
             <IconButton
