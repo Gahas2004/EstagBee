@@ -1,14 +1,18 @@
-import "./App.css";
+import "./styles/App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { Planets } from "./pages/Planets";
 import { Starships } from "./pages/Starships";
+import { Login } from "./pages/Login";
+import { SignUp } from "./pages/SignUp";
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="/planets" element={<Planets />} />
         <Route path="/planets/:id" element={<Planets />} />
         <Route path="/starships" element={<Starships />} />

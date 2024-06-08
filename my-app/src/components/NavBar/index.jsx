@@ -1,26 +1,32 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import MenuIcon from "@mui/icons-material/Menu";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
-import PublicIcon from "@mui/icons-material/Public";
-import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
-import SearchIcon from "@mui/icons-material/Search";
-import { SearchInput } from "./styles";
+
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  useMediaQuery,
+  Drawer,
+  List,
+  Divider,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText
+} from "@mui/material";
+import {
+  Menu as MenuIcon,
+  EmojiPeople as EmojiPeopleIcon,
+  Public as PublicIcon,
+  RocketLaunch as RocketLaunchIcon,
+  Search as SearchIcon
+} from "@mui/icons-material";
 import { yellow } from '@mui/material/colors';
+
+import { SearchInput } from "./styles";
 
 export default function NavBar({ setSearch, search }) {
   const [isScrolled, setIsScrolled] = useState(false);
