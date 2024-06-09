@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -25,13 +26,35 @@ function Copyright(props) {
 }
 
 export function Login() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [emailError, setEmailError] = useState(false);
+    const [passwordError, setPasswordError] = useState(false);
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+        const emailValue = data.get('email');
+        const passwordValue = data.get('password');
+
+        if (!emailValue) {
+            setEmailError(true);
+        } else {
+            setEmailError(false);
+        }
+
+        if (!passwordValue) {
+            setPasswordError(true);
+        } else {
+            setPasswordError(false);
+        }
+
+        if (emailValue && passwordValue) {
+            console.log({
+                email: emailValue,
+                password: passwordValue,
+            });
+        }
     };
 
     return (
@@ -47,11 +70,12 @@ export function Login() {
                     </Typography>
                 </Grid>
 
-                <Box component="form" onSubmit={handleSubmit} noValidate >
+                <Box component="form" onSubmit={handleSubmit} noValidate>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <TextField
-
+                                error={emailError}
+                                helperText={emailError ? 'Email is required' : ''}
                                 required
                                 fullWidth
                                 id="email"
@@ -59,11 +83,18 @@ export function Login() {
                                 name="email"
                                 autoComplete="email"
                                 autoFocus
+                                value={email}
+                                onChange={(e) => {
+                                    setEmail(e.target.value);
+                                    setEmailError(!e.target.value);
+                                }}
                             />
                         </Grid>
 
                         <Grid item xs={12}>
                             <TextField
+                                error={passwordError}
+                                helperText={passwordError ? 'Password is required' : ''}
                                 required
                                 fullWidth
                                 name="password"
@@ -71,6 +102,11 @@ export function Login() {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
+                                value={password}
+                                onChange={(e) => {
+                                    setPassword(e.target.value);
+                                    setPasswordError(!e.target.value);
+                                }}
                             />
                         </Grid>
 
@@ -96,16 +132,16 @@ export function Login() {
                                 Sign In
                             </Button>
                         </Grid>
-
                     </Grid>
-                    <Grid container>
+
+                    <Grid container spacing={2} sx={{ marginTop: '10px' }}>
                         <Grid item xs={6}>
                             <Link href="#" variant="body2">
                                 Forgot password?
                             </Link>
                         </Grid>
-                        <Grid item xs={6}  style={{justifyContent:"flex-end"}}>
-                            <Link href="#" variant="body2">
+                        <Grid item xs={6} style={{ textAlign: "right" }}>
+                            <Link href="/signup" variant="body2">
                                 {"Don't have an account? Sign Up"}
                             </Link>
                         </Grid>
@@ -116,4 +152,5 @@ export function Login() {
         </Container>
     );
 }
+
 export default Login;
