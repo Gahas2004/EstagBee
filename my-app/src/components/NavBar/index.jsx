@@ -37,7 +37,7 @@ export default function NavBar({ setSearch, search }) {
   });
 
   const handleReloadPage = () => {
-    window.location.href = "/"; // Altera a localização para a rota inicial
+    window.location.href = "/home"; // Altera a localização para a rota inicial
   };
 
   const toggleDrawer = (anchor, open) => (event) => {
@@ -82,7 +82,7 @@ export default function NavBar({ setSearch, search }) {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {[{ text: "Characters", link: "/" }].map((item, index) => (
+        {[{ text: "Characters", link: "/home" }].map((item, index) => (
           <ListItem key={index} disablePadding>
             <ListItemButton component={Link} to={item.link}>
               <ListItemIcon>
@@ -119,7 +119,7 @@ export default function NavBar({ setSearch, search }) {
       </List>
       <Box sx={{ marginTop: "FitScreen", textAlign: "center", padding: 2 }}>
         <Typography variant="caption" color="textSecondary">
-          &copy; 2024 João Pedro Araujo
+          &copy; {new Date().getFullYear()} Estagbee
         </Typography>
       </Box>
     </Box>
@@ -148,6 +148,7 @@ export default function NavBar({ setSearch, search }) {
           >
             <MenuIcon />
           </IconButton>
+
           <Drawer
             anchor="left"
             open={state["left"]}
@@ -155,22 +156,19 @@ export default function NavBar({ setSearch, search }) {
           >
             {list("left")}
           </Drawer>
-          <Link to={"/"} onClick={handleReloadPage}>
-            <Box
-              component="img"
-              sx={{ width: 60, height: 60, marginRight: "1rem" }}
-              src="/assets/darth-vader-18583.png"
-              alt="Star Wars Logo"
-            />
+
+          <Link onClick={handleReloadPage} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ flexGrow: 1, display: { xs: "flex", sm: "flex" }, fontFamily: 'Poppins', fontWeight: "bold"}}
+            >
+              Estagbee
+            </Typography>
           </Link>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: "flex", sm: "flex" } }}
-          >
-            Estagbee
-          </Typography>
-          {isMobile ? (
+
+
+          {isMobile ?
             <IconButton
               size="large"
               edge="end"
@@ -178,19 +176,21 @@ export default function NavBar({ setSearch, search }) {
               aria-label="open search"
               sx={{ ml: 2 }}
               onClick={handleSearchToggle}
+              style={{ marginLeft: "auto" }}
             >
               <SearchIcon />
             </IconButton>
-          ) : (
+            :
             <SearchInput
               icon={<SearchIcon />}
+              style={{ marginLeft: "auto" }}
               placeholder="Search"
               onChange={(e) => setSearch(e.target.value)}
             />
-          )}
+          }
         </Toolbar>
       </AppBar>
-      {isMobile && (
+      {isMobile &&
         <Drawer
           anchor="top"
           open={state.searchOpen}
@@ -204,7 +204,7 @@ export default function NavBar({ setSearch, search }) {
             />
           </Toolbar>
         </Drawer>
-      )}
+      }
     </Box>
   );
 }
