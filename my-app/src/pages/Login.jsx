@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Importar useNavigate
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -9,6 +10,10 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import Logo from '../assets/images/logo.png';
 
@@ -30,6 +35,22 @@ export function Login() {
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [emailErrorMessage, setEmailErrorMessage] = useState('');
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+    const navigate = useNavigate(); // Usar useNavigate
+
+    const validateEmail = (email) => {
+        // Regex para validar email
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    };
+
+    const validatePassword = (password) => {
+        // Regex para validar senha com pelo menos 6 caracteres, incluindo uma letra maiúscula
+        const re = /^(?=.*[A-Z]).{6,}$/;
+        return re.test(password);
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -37,23 +58,40 @@ export function Login() {
         const emailValue = data.get('email');
         const passwordValue = data.get('password');
 
+        let valid = true;
+
         if (!emailValue) {
             setEmailError(true);
+            setEmailErrorMessage('Email is required');
+            valid = false;
+        } else if (!validateEmail(emailValue)) {
+            setEmailError(true);
+            setEmailErrorMessage('Invalid email address');
+            valid = false;
         } else {
             setEmailError(false);
+            setEmailErrorMessage('');
         }
 
         if (!passwordValue) {
             setPasswordError(true);
+            setPasswordErrorMessage('Password is required');
+            valid = false;
+        } else if (!validatePassword(passwordValue)) {
+            setPasswordError(true);
+            setPasswordErrorMessage('Password must be at least 6 characters and include an uppercase letter');
+            valid = false;
         } else {
             setPasswordError(false);
+            setPasswordErrorMessage('');
         }
 
-        if (emailValue && passwordValue) {
+        if (valid) {
             console.log({
                 email: emailValue,
                 password: passwordValue,
             });
+            navigate('/home'); // Redirecionar para /home
         }
     };
 
@@ -75,7 +113,7 @@ export function Login() {
                         <Grid item xs={12}>
                             <TextField
                                 error={emailError}
-                                helperText={emailError ? 'Email is required' : ''}
+                                helperText={emailError ? emailErrorMessage : ''}
                                 required
                                 fullWidth
                                 id="email"
@@ -86,7 +124,9 @@ export function Login() {
                                 value={email}
                                 onChange={(e) => {
                                     setEmail(e.target.value);
-                                    setEmailError(!e.target.value);
+                                    if (emailError) {
+                                        setEmailError(!validateEmail(e.target.value));
+                                    }
                                 }}
                             />
                         </Grid>
@@ -94,18 +134,36 @@ export function Login() {
                         <Grid item xs={12}>
                             <TextField
                                 error={passwordError}
-                                helperText={passwordError ? 'Password is required' : ''}
+                                helperText={passwordError ? passwordErrorMessage : ''}
                                 required
                                 fullWidth
                                 name="password"
                                 label="Password"
-                                type="password"
+                                type={showPassword ? 'text' : 'password'}
                                 id="password"
-                                autoComplete="current-password"
+                                autoComplete="new-password"
                                 value={password}
                                 onChange={(e) => {
                                     setPassword(e.target.value);
-                                    setPasswordError(!e.target.value);
+                                    if (passwordError) {
+                                        setPasswordError(!validatePassword(e.target.value));
+                                        setPasswordErrorMessage('Password must be at least 6 characters and include an uppercase letter');
+                                    } else {
+                                        setPasswordErrorMessage('');
+                                    }
+                                }}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={() => setShowPassword(!showPassword)}
+                                                edge="end"
+                                            >
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
                                 }}
                             />
                         </Grid>

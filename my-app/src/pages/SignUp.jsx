@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -9,6 +11,11 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+
 import Logo from '../assets/images/logo.png';
 
 function Copyright(props) {
@@ -29,10 +36,26 @@ export function SignUp() {
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [firstNameError, setFirstNameError] = useState(false);
     const [lastNameError, setLastNameError] = useState(false);
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
+    const [emailErrorMessage, setEmailErrorMessage] = useState('');
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+    const navigate = useNavigate();
+
+    const validateEmail = (email) => {
+        // Regex para validar email
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    };
+
+    const validatePassword = (password) => {
+        // Regex para validar senha com pelo menos 6 caracteres, incluindo uma letra maiúscula
+        const re = /^(?=.*[A-Z]).{6,}$/;
+        return re.test(password);
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -42,18 +65,56 @@ export function SignUp() {
         const emailValue = data.get('email');
         const passwordValue = data.get('password');
 
-        setFirstNameError(!firstNameValue);
-        setLastNameError(!lastNameValue);
-        setEmailError(!emailValue);
-        setPasswordError(!passwordValue);
+        let valid = true;
 
-        if (firstNameValue && lastNameValue && emailValue && passwordValue) {
+        if (!firstNameValue) {
+            setFirstNameError(true);
+            valid = false;
+        } else {
+            setFirstNameError(false);
+        }
+
+        if (!lastNameValue) {
+            setLastNameError(true);
+            valid = false;
+        } else {
+            setLastNameError(false);
+        }
+
+        if (!emailValue) {
+            setEmailError(true);
+            setEmailErrorMessage('Email is required');
+            valid = false;
+        } else if (!validateEmail(emailValue)) {
+            setEmailError(true);
+            setEmailErrorMessage('Invalid email address');
+            valid = false;
+        } else {
+            setEmailError(false);
+            setEmailErrorMessage('');
+        }
+
+        if (!passwordValue) {
+            setPasswordError(true);
+            setPasswordErrorMessage('Password is required');
+            valid = false;
+        } else if (!validatePassword(passwordValue)) {
+            setPasswordError(true);
+            setPasswordErrorMessage('Password must be at least 6 characters and include an uppercase letter');
+            valid = false;
+        } else {
+            setPasswordError(false);
+            setPasswordErrorMessage('');
+        }
+
+        if (valid) {
             console.log({
                 firstName: firstNameValue,
                 lastName: lastNameValue,
                 email: emailValue,
                 password: passwordValue,
             });
+            navigate('/home');
         }
     };
 
@@ -112,7 +173,7 @@ export function SignUp() {
                         <Grid item xs={12}>
                             <TextField
                                 error={emailError}
-                                helperText={emailError ? 'Email is required' : ''}
+                                helperText={emailError ? emailErrorMessage : ''}
                                 required
                                 fullWidth
                                 id="email"
@@ -122,7 +183,12 @@ export function SignUp() {
                                 value={email}
                                 onChange={(e) => {
                                     setEmail(e.target.value);
-                                    setEmailError(!e.target.value);
+                                    if (emailError) {
+                                        setEmailError(!validateEmail(e.target.value));
+                                        setEmailErrorMessage('Invalid email address');
+                                    } else {
+                                        setEmailErrorMessage('');
+                                    }
                                 }}
                             />
                         </Grid>
@@ -130,18 +196,36 @@ export function SignUp() {
                         <Grid item xs={12}>
                             <TextField
                                 error={passwordError}
-                                helperText={passwordError ? 'Password is required' : ''}
+                                helperText={passwordError ? passwordErrorMessage : ''}
                                 required
                                 fullWidth
                                 name="password"
                                 label="Password"
-                                type="password"
+                                type={showPassword ? 'text' : 'password'}
                                 id="password"
                                 autoComplete="new-password"
                                 value={password}
                                 onChange={(e) => {
                                     setPassword(e.target.value);
-                                    setPasswordError(!e.target.value);
+                                    if (passwordError) {
+                                        setPasswordError(!validatePassword(e.target.value));
+                                        setPasswordErrorMessage('Password must be at least 6 characters and include an uppercase letter');
+                                    } else {
+                                        setPasswordErrorMessage('');
+                                    }
+                                }}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={() => setShowPassword(!showPassword)}
+                                                edge="end"
+                                            >
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
                                 }}
                             />
                         </Grid>
@@ -170,7 +254,6 @@ export function SignUp() {
                             </Button>
                         </Grid>
                     </Grid>
-
                 </Box>
                 <Grid container>
                     <Grid item xs={12} style={{ textAlign: "right", marginTop: "10px" }}>
