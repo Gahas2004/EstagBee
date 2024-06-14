@@ -97,34 +97,23 @@ export const Home = () => {
     // multiplos characters
     <div>
       <Navbar setSearch={handleSearch} search={search} />
-      <Container
-        maxWidth="false"
+      <Grid container spacing={2}
         style={{
-          minHeight: "80vh",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "between",
+          justifyContent: "center",
+          alignContent:"center",
+          alignItems:"center",
         }}
       >
         <Typography
           variant="title-lg"
-          style={{ marginBottom: "1rem", fontSize: "2rem" }}
+          style={{ marginBottom: "1rem", fontSize: "2rem", fontFamily:"Poppins", fontWeight:"Medium" }}
         >
-          Characters
-        </Typography>
-        {loading && (
-          <Grid container spacing={2}>
-            {Array.from({ length: 10 }).map((_, index) => (
-              <Grid item xs={12} sm={6} md={6} lg={3} key={index}>
-                <Skeleton variant="rectangular" width={300} height={150} />
-              </Grid>
-            ))}
-          </Grid>
-        )}
-        {!loading && characters.length > 0 && (
-          <Grid container spacing={2}>
+          Job offers
+        </Typography>          
             {characters.map((character, index) => (
-              <Grid item xs={12} sm={6} md={6} lg={3} key={index}>
+              <Grid item key={index}>
                 <ResultCard
                   name={character.name}
                   gender={character.gender}
@@ -133,9 +122,9 @@ export const Home = () => {
                 />
               </Grid>
             ))}
-          </Grid>
-        )}
-      </Container>
+          
+        
+      </Grid>
       {/* modal character selecionado */}
       {selectedCharacter && (
         <Modal
