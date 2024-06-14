@@ -130,13 +130,13 @@ export default function NavBar({ setSearch, search }) {
       sx={{
         flexGrow: 1,
         marginBottom: "1.5rem",
-        position: isScrolled && isMobile ? "fixed" : "relative",
+        position: "fixed",
         top: 0,
         zIndex: 1000,
         width: "100%",
       }}
     >
-      <AppBar position="static" sx={{ backgroundColor: yellow[800] }}>
+      <AppBar position="static" sx={{ backgroundColor: "#F6BA04" }}>
         <Toolbar>
           <IconButton
             size="large"

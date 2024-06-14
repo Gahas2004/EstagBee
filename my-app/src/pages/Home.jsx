@@ -95,7 +95,7 @@ export const Home = () => {
 
   return (
     // multiplos characters
-    <div>
+    <div style={{background: "#F6BA04"}}>
       <Navbar setSearch={handleSearch} search={search} />
       <Grid container spacing={2}
         style={{
@@ -108,7 +108,7 @@ export const Home = () => {
       >
         <Typography
           variant="title-lg"
-          style={{ marginBottom: "1rem", fontSize: "2rem", fontFamily:"Poppins", fontWeight:"Medium" }}
+          style={{ marginBottom: "1rem", fontSize: "2rem", fontFamily:"Poppins", fontWeight:"bold", color: "white"}}
         >
           Job offers
         </Typography>          
