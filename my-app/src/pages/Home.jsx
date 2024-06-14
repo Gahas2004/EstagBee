@@ -99,24 +99,21 @@ export const Home = () => {
       <Grid container xs={12}>
         <Navbar setSearch={handleSearch} search={search} />
       </Grid>
-      <Grid container spacing={2}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignContent: "center",
-          alignItems: "center",
-        }}
-      >
-          {characters.map((character, index) => (
-              <ResultCard
-                name={character.name}
-                gender={character.gender}
-                height={character.height}
-                onClick={() => setSelectedCharacter(character)}
-              />
-            
-          ))}
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Typography variant="title-lg" style={{ marginTop: "1rem", marginLeft:"40px", fontSize: "2rem", fontFamily: "Poppins", fontWeight: "bold", color: "white"}}>
+            Vagas vistas recentemente
+          </Typography>
+        </Grid>
+        {characters.map((character, index) => (
+          <ResultCard
+            name={character.name}
+            gender={character.gender}
+            height={character.height}
+            onClick={() => setSelectedCharacter(character)}
+          />
+
+        ))}
 
       </Grid>
       {/* modal character selecionado */}
