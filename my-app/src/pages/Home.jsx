@@ -95,35 +95,29 @@ export const Home = () => {
 
   return (
     // multiplos characters
-    <div style={{background: "#F6BA04"}}>
-      <Navbar setSearch={handleSearch} search={search} />
+    <div style={{ background: "#F6BA04" }}>
+      <Grid container xs={12}>
+        <Navbar setSearch={handleSearch} search={search} />
+      </Grid>
       <Grid container spacing={2}
         style={{
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          alignContent:"center",
-          alignItems:"center",
+          alignContent: "center",
+          alignItems: "center",
         }}
       >
-        <Typography
-          variant="title-lg"
-          style={{ marginBottom: "1rem", fontSize: "2rem", fontFamily:"Poppins", fontWeight:"bold", color: "white"}}
-        >
-          Job offers
-        </Typography>          
-            {characters.map((character, index) => (
-              <Grid item key={index}>
-                <ResultCard
-                  name={character.name}
-                  gender={character.gender}
-                  height={character.height}
-                  onClick={() => setSelectedCharacter(character)}
-                />
-              </Grid>
-            ))}
-          
-        
+          {characters.map((character, index) => (
+              <ResultCard
+                name={character.name}
+                gender={character.gender}
+                height={character.height}
+                onClick={() => setSelectedCharacter(character)}
+              />
+            
+          ))}
+
       </Grid>
       {/* modal character selecionado */}
       {selectedCharacter && (

@@ -15,9 +15,11 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Imagem from '../../assets/images/logo.png'; // Importação correta da imagem
 import Shirae from '../../assets/images/shirae.jpeg'; // Importação correta da imagem
 import Button from '@mui/material/Button';
+import { Grid } from '@mui/material';
 
 export default function ResultCard({ name, gender, height }) {
   return (
+    <Grid item xs={12}>
     <Card sx={{ 
       width: '600px', 
       maxWidth: '90vw', 
@@ -25,7 +27,6 @@ export default function ResultCard({ name, gender, height }) {
       display: 'flex', 
       flexDirection: 'column',
       justifyContent: 'space-between',
-      
     }}>
       <CardHeader
         avatar={<Avatar sx={{ bgcolor: red[500] }} aria-label="recipe" src={Shirae} />}
@@ -67,5 +68,6 @@ export default function ResultCard({ name, gender, height }) {
         </div>
       </CardActions>
     </Card>
+    </Grid>
   );
 }

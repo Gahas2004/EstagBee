@@ -15,7 +15,8 @@ import {
   ListItem,
   ListItemButton,
   ListItemIcon,
-  ListItemText
+  ListItemText,
+  Grid
 } from "@mui/material";
 import {
   Menu as MenuIcon,
@@ -126,70 +127,63 @@ export default function NavBar({ setSearch, search }) {
   );
 
   return (
-    <Box
-      sx={{
-        flexGrow: 1,
-        marginBottom: "1.5rem",
-        position: "fixed",
-        top: 0,
-        zIndex: 1000,
-        width: "100%",
-      }}
-    >
-      <AppBar position="static" sx={{ backgroundColor: "#F6BA04" }}>
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-            onClick={toggleDrawer("left", true)}
-          >
-            <MenuIcon />
-          </IconButton>
-
-          <Drawer
-            anchor="left"
-            open={state["left"]}
-            onClose={toggleDrawer("left", false)}
-          >
-            {list("left")}
-          </Drawer>
-
-          <Link onClick={handleReloadPage} style={{ textDecoration: 'none', color: 'inherit' }}>
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{ flexGrow: 1, display: { xs: "flex", sm: "flex" }, fontFamily: 'Poppins', fontWeight: "bold"}}
-            >
-              Estagbee
-            </Typography>
-          </Link>
-
-
-          {isMobile ?
+    <Grid container style={{ marginBottom: '10px', position: isScrolled ? "fixed" : "inherit", zIndex: 1000 }}>
+      <Grid item xs={12}>
+        <AppBar position="static" sx={{ backgroundColor: "#F6BA04" }}>
+          <Toolbar>
             <IconButton
               size="large"
-              edge="end"
+              edge="start"
               color="inherit"
-              aria-label="open search"
-              sx={{ ml: 2 }}
-              onClick={handleSearchToggle}
-              style={{ marginLeft: "auto" }}
+              aria-label="open drawer"
+              sx={{ mr: 2 }}
+              onClick={toggleDrawer("left", true)}
             >
-              <SearchIcon />
+              <MenuIcon />
             </IconButton>
-            :
-            <SearchInput
-              icon={<SearchIcon />}
-              style={{ marginLeft: "auto" }}
-              placeholder="Search"
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          }
-        </Toolbar>
-      </AppBar>
+
+            <Drawer
+              anchor="left"
+              open={state["left"]}
+              onClose={toggleDrawer("left", false)}
+            >
+              {list("left")}
+            </Drawer>
+
+            <Link onClick={handleReloadPage} style={{ textDecoration: 'none', color: 'inherit' }}>
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{ flexGrow: 1, display: { xs: "flex", sm: "flex" }, fontFamily: 'Poppins', fontWeight: "bold" }}
+              >
+                Estagbee
+              </Typography>
+            </Link>
+
+
+            {isMobile ?
+              <IconButton
+                size="large"
+                edge="end"
+                color="inherit"
+                aria-label="open search"
+                sx={{ ml: 2 }}
+                onClick={handleSearchToggle}
+                style={{ marginLeft: "auto" }}
+              >
+                <SearchIcon />
+              </IconButton>
+              :
+              <SearchInput
+                icon={<SearchIcon />}
+                style={{ marginLeft: "auto" }}
+                placeholder="Search"
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            }
+          </Toolbar>
+        </AppBar>
+      </Grid>
       {isMobile &&
         <Drawer
           anchor="top"
@@ -205,6 +199,6 @@ export default function NavBar({ setSearch, search }) {
           </Toolbar>
         </Drawer>
       }
-    </Box>
+    </Grid>
   );
 }
