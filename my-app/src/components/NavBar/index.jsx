@@ -127,7 +127,7 @@ export default function NavBar({ setSearch, search }) {
   );
 
   return (
-    <Grid container style={{ marginBottom: '10px', position: isScrolled ? "fixed" : "inherit", zIndex: 1000 }}>
+    <Grid container style={{ marginBottom: '10px', zIndex: 1000 }}>
       <Grid item xs={12}>
         <AppBar position="static" sx={{ backgroundColor: "#F6BA04" }}>
           <Toolbar>
@@ -177,7 +177,7 @@ export default function NavBar({ setSearch, search }) {
               <SearchInput
                 icon={<SearchIcon />}
                 style={{ marginLeft: "auto" }}
-                placeholder="Search"
+                placeholder="Pesquisar"
                 onChange={(e) => setSearch(e.target.value)}
               />
             }
@@ -193,7 +193,7 @@ export default function NavBar({ setSearch, search }) {
           <Toolbar>
             <SearchInput
               icon={<SearchIcon />}
-              placeholder="Search"
+              placeholder="Pesquisar"
               onChange={(e) => setSearch(e.target.value)}
             />
           </Toolbar>

@@ -5,8 +5,9 @@ import { Planets } from "./pages/Planets";
 import { Starships } from "./pages/Starships";
 import { Login } from "./pages/Login";
 import { SignUp } from "./pages/SignUp";
+import { JobConfirm } from "./pages/JobConfirm";
 
-function App() {
+function Pages() {
   return (
     <Router>
       <Routes>
@@ -17,6 +18,7 @@ function App() {
         <Route path="/planets/:id" element={<Planets />} />
         <Route path="/starships" element={<Starships />} />
         <Route path="/starships/:id" element={<Starships />} />
+        <Route path="/job/:id" element={<JobConfirm/>} />
         <Route
           path="*"
           element={
@@ -39,4 +41,4 @@ function App() {
   );
 }
 
-export default App;
+export default Pages;

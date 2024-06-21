@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './styles/index.css';
-import Router from './Router';
+import Pages from './Pages';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <Router />
+  <Pages />
 );

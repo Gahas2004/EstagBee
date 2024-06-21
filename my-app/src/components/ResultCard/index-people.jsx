@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
+
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
@@ -17,7 +17,7 @@ import Shirae from '../../assets/images/shirae.jpeg'; // Importação correta da
 import Button from '@mui/material/Button';
 import { Grid } from '@mui/material';
 
-export default function ResultCard({ name, gender, height }) {
+export default function ResultCard({ name, gender, height, onClick }) {
   return (
     <Grid item xs={12} style={{
       display: "flex",
@@ -70,7 +70,10 @@ export default function ResultCard({ name, gender, height }) {
               '&:hover': {
                 backgroundColor: '#e6a503' // cor personalizada para o hover
               }
-            }}>Candidatar-se</Button>
+            }}
+            onClick={onClick}
+            >Candidatar-se
+            </Button>
           </div>
         </CardActions>
       </Card>

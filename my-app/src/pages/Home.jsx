@@ -1,22 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../components/NavBar/index.jsx";
 import ResultCard from "../components/ResultCard/index-people.jsx";
-import {
-  Box,
-  Card,
-  CardActions,
-  CardContent,
-  Container,
-  Grid,
-  Modal,
-  Pagination,
-  Skeleton,
-  Typography,
-  Button,
-  Stack,
-} from "@mui/material";
+import { Box, Grid, Pagination, Typography } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { grey } from '@mui/material/colors';
 
 export const Home = () => {
   const [characters, setCharacters] = useState([]);
@@ -81,7 +69,7 @@ export const Home = () => {
 
   const handleGoToHomeWorld = (homeWorldUrl) => {
     const id = homeWorldUrl.split("/")[5];
-    navigate(`/planets/${id}`);
+    navigate(`/job/`);
   };
 
   const handleGoToStarships = (starship) => {
@@ -95,13 +83,13 @@ export const Home = () => {
 
   return (
     // multiplos characters
-    <div style={{ background: "#F6BA04" }}>
+    <div style={{ background: grey[100] }}>
       <Grid container xs={12}>
         <Navbar setSearch={handleSearch} search={search} />
       </Grid>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Typography variant="title-lg" style={{ marginTop: "1rem", marginLeft:"40px", fontSize: "2rem", fontFamily: "Poppins", fontWeight: "bold", color: "white"}}>
+          <Typography variant="title-lg" style={{ marginTop: "1rem", marginLeft: "40px", fontSize: "2rem", fontFamily: "Poppins", fontWeight: "bold", color: "#F6BA04" }}>
             Vagas vistas recentemente
           </Typography>
         </Grid>
@@ -110,113 +98,16 @@ export const Home = () => {
             name={character.name}
             gender={character.gender}
             height={character.height}
-            onClick={() => setSelectedCharacter(character)}
+            onClick={() => {
+              setSelectedCharacter(character)
+              window.open(`/job/${index+1}`, '_blank');
+            }}
+            loading={loading}
           />
 
         ))}
-
       </Grid>
-      {/* modal character selecionado */}
-      {selectedCharacter && (
-        <Modal
-          open={!!selectedCharacter}
-          onClose={() => setSelectedCharacter(null)}
-        >
-          <Card
-            sx={{
-              maxWidth: "70vw",
-              margin: "auto",
-              marginTop: "20px",
-              backgroundColor: "white",
-              borderRadius: "10px",
-              boxShadow: "0px 0px 10px 0px #000000",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <CardContent>
-              <Box
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Typography gutterBottom variant="h2" component="div">
-                  {selectedCharacter.name}
-                </Typography>
-              </Box>
-              <Typography variant="body2" color="text.secondary">
-                Birth Year: {selectedCharacter.birth_year}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Created: {selectedCharacter.created}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Edited {selectedCharacter.edited}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Eye Color: {selectedCharacter.eye_color}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Height: {selectedCharacter.height}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Gender: {selectedCharacter.gender}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Hair Collor: {selectedCharacter.hair_color}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Mass: {selectedCharacter.mass}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Skin Color: {selectedCharacter.skin_color}
-              </Typography>
-              {selectedCharacter.starships.length > 0 ? (
-                <Typography variant="body2" color="text.secondary">
-                  Total of starships: {selectedCharacter.starships.length}
-                </Typography>
-              ) : (
-                <Typography variant="body2" color="text.secondary">
-                  No starships available...
-                </Typography>
-              )}
-              <Box
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                {selectedCharacter.starships.length > 0 &&
-                  selectedCharacter.starships.map((starship, index) => (
-                    <>
-                      <Button onClick={() => handleGoToStarships(starship)}>
-                        Access {index + 1}º Starship
-                      </Button>
-                    </>
-                  ))}
-              </Box>
-            </CardContent>
-            <CardActions
-              onClick={() => handleGoToHomeWorld(selectedCharacter.homeworld)}
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Stack direction="row" spacing={2}>
-                <Button variant="contained">Go to Homeworld</Button>
-              </Stack>
-            </CardActions>
-          </Card>
-        </Modal>
-      )}
+      
       <Box
         style={{
           width: "100%",
