@@ -52,7 +52,7 @@ ipython_config.py
 .ipynb_checkpoints
 
 # Configuração de IDE
-.idea/
+.idea/*
 .vscode/
 *.swp
 
