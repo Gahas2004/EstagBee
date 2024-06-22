@@ -1,3 +1,5 @@
+CREATE DATABASE estagbee
+
 -- Criar a tabela Usuario
 CREATE TABLE Usuario (
     id SERIAL PRIMARY KEY,
