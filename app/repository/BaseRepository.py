@@ -3,14 +3,14 @@ import psycopg2
 from app import Constants
 
 
-class Repository:
+class BaseRepository:
     _instance = None
     _conn = None
     _cursor = None
 
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
-            cls._instance = super(Repository, cls).__new__(cls)
+            cls._instance = super(BaseRepository, cls).__new__(cls)
         return cls._instance
 
     def __init__(self):
@@ -23,10 +23,8 @@ class Repository:
                 port=Constants.DB_PORT
             )
             print(f"psycopg2 successfully connected to {Constants.DB_NAME}")
-            return True
         except psycopg2.Error as e:
             print(f"psycopg2 failed to connect to {Constants.DB_NAME}: {e}")
-            return False
 
     def _execute_query(self, query: str):
         self._open_cursor()
