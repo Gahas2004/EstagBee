@@ -1,21 +1,25 @@
+from abc import abstractmethod
+
 import psycopg2
+from pydantic import BaseModel
 
 from app import Constants
 
 
 class BaseRepository:
     _instance = None
-    _conn = None
-    _cursor = None
+    conn = None
+    cursor = None
 
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
+            print("Created new database instance")
             cls._instance = super(BaseRepository, cls).__new__(cls)
         return cls._instance
 
     def __init__(self):
         try:
-            self._conn = psycopg2.connect(
+            self.conn = psycopg2.connect(
                 dbname=Constants.DB_NAME,
                 user=Constants.DB_USER,
                 password=Constants.DB_PASSWORD,
@@ -28,15 +32,19 @@ class BaseRepository:
 
     def _execute_query(self, query: str):
         self._open_cursor()
-        self._cursor.execute(query)
+        self.cursor.execute(query)
         self._close_cursor()
+        self.conn.commit()
+
+    @abstractmethod
+    def insert(self, entity: BaseModel):
         pass
 
     def _open_cursor(self):
-        self._cursor = self._conn.cursor()
+        self.cursor = self.conn.cursor()
 
     def _close_cursor(self):
-        self._cursor.close()
+        self.cursor.close()
 
     def _close_db_connection(self):
-        self._conn.close()
+        self.conn.close()

@@ -53,6 +53,9 @@ ipython_config.py
 
 # Configuração de IDE
 .idea/*
+.idea/EstagBee.iml
+.idea/misc.xml
+.idea/
 .vscode/
 *.swp
 

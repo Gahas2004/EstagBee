@@ -1,41 +1,55 @@
 -- Create the User table
-CREATE TABLE User (
+CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     login_credential VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL
+    password VARCHAR(255) NOT NULL,
+    name VARCHAR(255)
 );
 
 -- Create the Student table that inherits from User
-CREATE TABLE Student (
+CREATE TABLE student (
     student_id SERIAL PRIMARY KEY,
     RA INT,
-    name VARCHAR(255),
     course VARCHAR(255),
-    FOREIGN KEY (student_id) REFERENCES User (id)
+    FOREIGN KEY (student_id) REFERENCES users (id)
 );
 
 -- Create the Company table that inherits from User
-CREATE TABLE Company (
+CREATE TABLE company (
     company_id SERIAL PRIMARY KEY,
-    CNPJ VARCHAR(14),
-    name VARCHAR(255),
-    job_info TEXT,
-    FOREIGN KEY (company_id) REFERENCES User (id)
+    document VARCHAR(14),
+    website VARCHAR(255),
+    FOREIGN KEY (company_id) REFERENCES users (id)
 );
 
 -- Create the Job table
-CREATE TABLE Job (
+CREATE TABLE job (
     job_id SERIAL PRIMARY KEY,
     description TEXT,
     company_name VARCHAR(255),
+    job_name VARCHAR(255),
     photo BYTEA,
-    FOREIGN KEY (company_name) REFERENCES User (login_credential)
+    FOREIGN KEY (company_name) REFERENCES users (login_credential)
 );
 
 -- Create the Resume table
-CREATE TABLE Resume (
+CREATE TABLE resume (
     resume_id SERIAL PRIMARY KEY,
     file_name VARCHAR(255),
     student_id INT,
-    FOREIGN KEY (student_id) REFERENCES Student (student_id)
+    FOREIGN KEY (student_id) REFERENCES student (student_id)
 );
+
+
+-- useful queries:
+SELECT
+    u.id,
+    u.login_credential,
+    u.password,
+    u.name,
+    s.RA,
+    s.course
+FROM
+    users u
+JOIN
+    student s ON u.id = s.student_id;
