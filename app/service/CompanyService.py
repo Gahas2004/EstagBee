@@ -1,4 +1,4 @@
-from http.client import HTTPException
+from fastapi import HTTPException
 
 from app.model.Company import Company
 from app.model.User import User
@@ -32,4 +32,15 @@ class CompanyService(UserService):
 
     def validate_login(self, login_dto: LoginDto) -> Company:
         result = self.company_repository.get_one(login_dto.login_credential)
+        if not self._is_login_and_password_valid(login_dto, result):
+            raise HTTPException(status_code=404, detail="Company data mismatching.")
         return result
+
+    def _is_login_and_password_valid(self, login_dto: LoginDto, company: Company) -> bool:
+        if login_dto.login_credential != company.login_credential:
+            return False
+
+        if login_dto.password != company.password:
+            return False
+
+        return True
