@@ -1,3 +1,7 @@
+from dataclasses import dataclass
+
+
+@dataclass
 class Resume:
-    file: str
+    description: str
     student_id: int

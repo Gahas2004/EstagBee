@@ -1,6 +1,5 @@
 from abc import abstractmethod
 
-from app.model.Student import Student
 from app.model.User import User
 from app.model.dto.UserDto import UserDto
 from app.repository.UserRepository import UserRepository
@@ -27,3 +26,7 @@ class UserService:
                     name=user_dto.name,
                     password=user_dto.password,
                     login_credential=user_dto.login_credential)
+
+    @abstractmethod
+    def validate_login(self, dto):
+        pass
