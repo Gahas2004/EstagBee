@@ -93,12 +93,13 @@ export const Home = () => {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Typography variant="title-lg" style={{ marginTop: "1rem", marginLeft: "40px", fontSize: "2rem", fontFamily: "Poppins", fontWeight: "bold", color: "#F6BA04" }}>
-            Vagas vistas recentemente
+            Vagas disponíveis
           </Typography>
         </Grid>
         {characters.map((character, index) => (
           <ResultCard
-            key={index}s
+            type={type}
+            key={index}
             name={character.name}
             gender={character.gender}
             height={character.height}

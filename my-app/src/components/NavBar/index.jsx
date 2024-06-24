@@ -25,7 +25,9 @@ import {
   RocketLaunch as RocketLaunchIcon,
   Search as SearchIcon,
 } from "@mui/icons-material";
+
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import WorkIcon from '@mui/icons-material/Work';
 
 import { SearchInput } from "./styles";
 
@@ -82,18 +84,50 @@ export default function NavBar({ setSearch, search, type }) {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <List>
-        {[{ text: "Characters", link: "/home" }].map((item, index) => (
-          <ListItem key={index} disablePadding>
-            <ListItemButton component={Link} to={item.link}>
-              <ListItemIcon>
-                {index === 0 ? <EmojiPeopleIcon /> : null}
-              </ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+
+      {type === "company" && (
+        <List>
+          {[{ text: "Cadastrar vaga", link: "/starships" }].map((item, index) => (
+            <ListItem key={index} disablePadding>
+              <ListItemButton component={Link} to={item.link}>
+                <ListItemIcon>
+                  {index === 0 ? <AddCircleIcon /> : null}
+                </ListItemIcon>
+                <ListItemText primary={item.text} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      )
+      }
+      <Divider />
+      {type === "company" ?
+        <List>
+          {[{ text: "Vagas Ofertadas", link: "/home" }].map((item, index) => (
+            <ListItem key={index} disablePadding>
+              <ListItemButton component={Link} to={item.link}>
+                <ListItemIcon>
+                  {index === 0 ? <WorkIcon /> : null}
+                </ListItemIcon>
+                <ListItemText primary={item.text} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+        :
+        <List>
+          {[{ text: "Vagas disponíveis", link: "/home" }].map((item, index) => (
+            <ListItem key={index} disablePadding>
+              <ListItemButton component={Link} to={item.link}>
+                <ListItemIcon>
+                  {index === 0 ? <WorkIcon /> : null}
+                </ListItemIcon>
+                <ListItemText primary={item.text} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      }
       <Divider />
       <List>
         {[{ text: "Planets", link: "/planets" }].map((item, index) => (
@@ -118,21 +152,6 @@ export default function NavBar({ setSearch, search, type }) {
           </ListItem>
         ))}
       </List>
-      {type === "company" && (
-        <List>
-          {[{ text: "Cadastrar vaga", link: "/starships" }].map((item, index) => (
-            <ListItem key={index} disablePadding>
-              <ListItemButton component={Link} to={item.link}>
-                <ListItemIcon>
-                  {index === 0 ? <AddCircleIcon /> : null}
-                </ListItemIcon>
-                <ListItemText primary={item.text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      )
-      }
 
       <Box sx={{ marginTop: "FitScreen", textAlign: "center", padding: 2 }}>
         <Typography variant="caption" color="textSecondary">
@@ -172,10 +191,10 @@ export default function NavBar({ setSearch, search, type }) {
                 component="div"
                 sx={{ flexGrow: 1, display: { xs: "flex", sm: "flex" }, fontFamily: 'Poppins', fontWeight: "bold" }}
               >
-                Estagbee
+                {type === 'student' ? 'Estagbee Student' : 'Estagbee Company'}
               </Typography>
             </Link>
-
+            {console.log(type)}
 
             {isMobile ?
               <IconButton

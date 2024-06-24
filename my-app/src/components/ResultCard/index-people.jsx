@@ -17,7 +17,7 @@ import Shirae from '../../assets/images/shirae.jpeg'; // Importação correta da
 import Button from '@mui/material/Button';
 import { Grid } from '@mui/material';
 
-export default function ResultCard({ name, gender, height, onClick }) {
+export default function ResultCard({ name, gender, height, onClick, type }) {
   return (
     <Grid item xs={12} style={{
       display: "flex",
@@ -61,20 +61,36 @@ export default function ResultCard({ name, gender, height, onClick }) {
           <IconButton aria-label="add to favorites">
             <FavoriteIcon />
           </IconButton>
+
           <IconButton aria-label="share">
             <ShareIcon />
           </IconButton>
-          <div style={{ marginLeft: 'auto' }}>
-            <Button variant="contained" sx={{
-              backgroundColor: '#F6BA04',
-              '&:hover': {
-                backgroundColor: '#e6a503' // cor personalizada para o hover
-              }
-            }}
-            onClick={onClick}
-            >Candidatar-se
-            </Button>
-          </div>
+
+          {type === "student" ?
+            <div style={{ marginLeft: 'auto' }}>
+              <Button variant="contained" sx={{
+                backgroundColor: '#F6BA04',
+                '&:hover': {
+                  backgroundColor: '#e6a503' // cor personalizada para o hover
+                }
+              }}
+                onClick={onClick}
+              >Candidatar-se
+              </Button>
+            </div>
+            :
+            <div style={{ marginLeft: 'auto' }}>
+              <Button variant="contained" sx={{
+                backgroundColor: '#F6BA04',
+                '&:hover': {
+                  backgroundColor: '#e6a503' // cor personalizada para o hover
+                }
+              }}
+                onClick={onClick}
+              >Candidaturas
+              </Button>
+            </div>
+          }
         </CardActions>
       </Card>
     </Grid>
