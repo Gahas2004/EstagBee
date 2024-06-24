@@ -75,8 +75,6 @@ export default function NavBar({ setSearch, search, type }) {
     setState({ ...state, searchOpen: false });
   };
 
-  console.log(type);
-
   const list = (anchor) => (
     <Box
       sx={{ width: 250 }}

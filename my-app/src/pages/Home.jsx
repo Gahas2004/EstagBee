@@ -84,7 +84,7 @@ export const Home = () => {
   useEffect(() => {
     getCharacters(search);
   }, [page]);
-  console.log(type)
+
   return (
     <div style={{ background: grey[100] }}>
       <Grid container>
