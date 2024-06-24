@@ -23,13 +23,13 @@ import {
   EmojiPeople as EmojiPeopleIcon,
   Public as PublicIcon,
   RocketLaunch as RocketLaunchIcon,
-  Search as SearchIcon
+  Search as SearchIcon,
 } from "@mui/icons-material";
-import { yellow } from '@mui/material/colors';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 import { SearchInput } from "./styles";
 
-export default function NavBar({ setSearch, search }) {
+export default function NavBar({ setSearch, search, type }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const isMobile = useMediaQuery("(max-width:600px)");
   const [state, setState] = React.useState({
@@ -75,6 +75,8 @@ export default function NavBar({ setSearch, search }) {
     setState({ ...state, searchOpen: false });
   };
 
+  console.log(type);
+
   const list = (anchor) => (
     <Box
       sx={{ width: 250 }}
@@ -118,6 +120,22 @@ export default function NavBar({ setSearch, search }) {
           </ListItem>
         ))}
       </List>
+      {type === "company" && (
+        <List>
+          {[{ text: "Cadastrar vaga", link: "/starships" }].map((item, index) => (
+            <ListItem key={index} disablePadding>
+              <ListItemButton component={Link} to={item.link}>
+                <ListItemIcon>
+                  {index === 0 ? <AddCircleIcon /> : null}
+                </ListItemIcon>
+                <ListItemText primary={item.text} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      )
+      }
+
       <Box sx={{ marginTop: "FitScreen", textAlign: "center", padding: 2 }}>
         <Typography variant="caption" color="textSecondary">
           &copy; {new Date().getFullYear()} Estagbee

@@ -5,6 +5,7 @@ import { Box, Grid, Pagination, Typography } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { grey } from '@mui/material/colors';
+import { useLocation } from 'react-router-dom';
 
 export const Home = () => {
   const [characters, setCharacters] = useState([]);
@@ -15,6 +16,9 @@ export const Home = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const debounceTimeout = useRef(null);
+
+  const location = useLocation();
+  const type = location.state?.type;
 
   const calcPagination = (count, length) => {
     if (page === 1) {
@@ -80,12 +84,11 @@ export const Home = () => {
   useEffect(() => {
     getCharacters(search);
   }, [page]);
-
+  console.log(type)
   return (
-    // multiplos characters
     <div style={{ background: grey[100] }}>
-      <Grid container xs={12}>
-        <Navbar setSearch={handleSearch} search={search} />
+      <Grid container>
+        <Navbar setSearch={handleSearch} search={search} type={type} />
       </Grid>
       <Grid container spacing={2}>
         <Grid item xs={12}>
@@ -95,19 +98,20 @@ export const Home = () => {
         </Grid>
         {characters.map((character, index) => (
           <ResultCard
+            key={index}s
             name={character.name}
             gender={character.gender}
             height={character.height}
             onClick={() => {
               setSelectedCharacter(character)
-              window.open(`/job/${index+1}`, '_blank');
+              window.open(`/job/${index + 1}`, '_blank');
             }}
             loading={loading}
           />
 
         ))}
       </Grid>
-      
+
       <Box
         style={{
           width: "100%",

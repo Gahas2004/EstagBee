@@ -18,7 +18,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import Logo from '../../assets/images/logo.png';
 
-export function SignUp() {
+export function SignUp({type}) {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
@@ -100,8 +100,9 @@ export function SignUp() {
                 lastName: lastNameValue,
                 email: emailValue,
                 password: passwordValue,
+                type: type
             });
-            navigate('/home');
+            navigate('/home', { state: { type } });
         }
     };
 
@@ -242,13 +243,13 @@ export function SignUp() {
                     </Grid>
                 </Grid>
             </Box>
-            <Grid container>
-                <Grid item xs={12} style={{ textAlign: "right", marginTop: "10px" }}>
-                    <Link href="/" variant="body2">
-                        Already have an account? Sign in
-                    </Link>
-                </Grid>
+            
+            <Grid item xs={10} style={{ textAlign: "right", marginTop: "10px" }}>
+                <Link href="/" variant="body2">
+                    Already have an account? Sign in
+                </Link>
             </Grid>
+
         </Grid>
 
 

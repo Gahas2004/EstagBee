@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importar useNavigate
+import { useNavigate } from 'react-router-dom';
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -10,6 +10,7 @@ import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
@@ -17,15 +18,17 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import Logo from '../../assets/images/logo.png';
 
-export function Login({type}) {
+export function SignUp({type}) {
+    const [companyName, setcompanyName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [companyNameError, setcompanyNameError] = useState(false);
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
-    const [showPassword, setShowPassword] = useState(false);
     const [emailErrorMessage, setEmailErrorMessage] = useState('');
     const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
-    const navigate = useNavigate(); // Usar useNavigate
+    const navigate = useNavigate();
 
     const validateEmail = (email) => {
         // Regex para validar email
@@ -42,10 +45,18 @@ export function Login({type}) {
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+        const companyNameValue = data.get('companyName');
         const emailValue = data.get('email');
         const passwordValue = data.get('password');
 
         let valid = true;
+
+        if (!companyNameValue) {
+            setcompanyNameError(true);
+            valid = false;
+        } else {
+            setcompanyNameError(false);
+        }
 
         if (!emailValue) {
             setEmailError(true);
@@ -75,16 +86,16 @@ export function Login({type}) {
 
         if (valid) {
             console.log({
+                companyName: companyNameValue,
                 email: emailValue,
                 password: passwordValue,
                 type: type
             });
-            navigate('/home', { state: { type } }); // Redirecionar para /home
+            navigate('/home', { state: { type } });
         }
     };
 
     return (
-
         <Grid container justifyContent="center" sx={{ padding: "30px" }}>
             <Grid item style={{ textAlign: "center", padding: "20px" }}>
                 <img src={Logo} alt="Logo" />
@@ -100,6 +111,25 @@ export function Login({type}) {
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <TextField
+                            error={companyNameError}
+                            helperText={companyNameError ? 'Name is required' : ''}
+                            autoComplete="given-name"
+                            name="companyName"
+                            required
+                            fullWidth
+                            id="companyName"
+                            label="Name of the company"
+                            autoFocus
+                            value={companyName}
+                            onChange={(e) => {
+                                setcompanyName(e.target.value);
+                                setcompanyNameError(!e.target.value);
+                            }}
+                        />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <TextField
                             error={emailError}
                             helperText={emailError ? emailErrorMessage : ''}
                             required
@@ -108,12 +138,14 @@ export function Login({type}) {
                             label="Email Address"
                             name="email"
                             autoComplete="email"
-                            autoFocus
                             value={email}
                             onChange={(e) => {
                                 setEmail(e.target.value);
                                 if (emailError) {
                                     setEmailError(!validateEmail(e.target.value));
+                                    setEmailErrorMessage('Invalid email address');
+                                } else {
+                                    setEmailErrorMessage('');
                                 }
                             }}
                         />
@@ -158,8 +190,8 @@ export function Login({type}) {
 
                     <Grid item xs={12}>
                         <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
+                            control={<Checkbox value="allowExtraEmails" color="primary" />}
+                            label="I want to receive inspiration, marketing promotions and updates via email."
                         />
                     </Grid>
 
@@ -169,34 +201,30 @@ export function Login({type}) {
                             fullWidth
                             variant="contained"
                             sx={{
+                                mt: 1,
                                 backgroundColor: '#F6BA04',
                                 '&:hover': {
                                     backgroundColor: '#F6A204', // cor ao passar o mouse
                                 }
                             }}
                         >
-                            Sign In
+                            Sign Up
                         </Button>
                     </Grid>
                 </Grid>
-
-                <Grid container spacing={2} sx={{ marginTop: '10px' }}>
-                    <Grid item xs={6}>
-                        <Link href="#" variant="body2">
-                            Forgot password?
-                        </Link>
-                    </Grid>
-                    <Grid item xs={6} style={{ textAlign: "right" }}>
-                        <Link href="/signup" variant="body2">
-                            {"Don't have an account? Sign Up"}
-                        </Link>
-                    </Grid>
-                </Grid>
             </Box>
+
+            <Grid item xs={8} style={{ textAlign:"right", marginTop: "10px" }}>
+                <Link href="/" variant="body2">
+                    Already have an account? Sign in
+                </Link>
+            </Grid>
+
         </Grid>
+
 
 
     );
 }
 
-export default Login;
+export default SignUp;

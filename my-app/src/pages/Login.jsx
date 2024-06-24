@@ -2,9 +2,15 @@ import * as React from 'react';
 
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
+import { useState } from 'react';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 
 import Student from '../components/Login/Student';
+import Company from '../components/Login/Company';
+import { Grid } from '@mui/material';
+
+
 
 function Copyright(props) {
     return (
@@ -21,11 +27,54 @@ function Copyright(props) {
 
 export function Login() {
 
+    const [selectedButton, setSelectedButton] = useState('student'); // Estado para controlar qual botão está selecionado
+    const handleButtonClick = (button) => {
+        setSelectedButton(button);
+    };
+    const selectedColor = '#F6BA04';
+    const unselectedColor = '#D3D3D3';
+
+
     return (
-        <Container component="main" minWidht="xs">
-            <Student/>
-            <Copyright />
-        </Container>
+        <Grid container>
+            <Grid item xs={12} style={{ textAlign: "right", padding: 20 }}>
+                <ButtonGroup variant="contained">
+                    <Button
+                        onClick={() => handleButtonClick('student')}
+                        style={{
+                            backgroundColor: selectedButton === 'student' ? selectedColor : unselectedColor,
+                            color: '#fff'
+                        }}
+                    >
+                        student
+                    </Button>
+                    <Button
+                        onClick={() => handleButtonClick('company')}
+                        style={{
+                            backgroundColor: selectedButton === 'company' ? selectedColor : unselectedColor,
+                            color: '#fff'
+                        }}
+                    >
+                        company
+                    </Button>
+                </ButtonGroup>
+            </Grid>
+            <Grid item xs={12}>
+                {selectedButton === 'student' && (
+                    <Student
+                        type={'student'}
+                    />
+                )}
+                {selectedButton === 'company' && (
+                    <Company
+                        type={'company'}
+                    />
+                )}
+            </Grid>
+            <Grid item xs={12}>
+                <Copyright />
+            </Grid>
+        </Grid>
     );
 }
 
