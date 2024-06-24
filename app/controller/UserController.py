@@ -5,7 +5,6 @@ from app.model.Student import Student
 from app.model.dto.CompanyDto import CompanyDto
 from app.model.dto.LoginDto import LoginDto
 from app.model.dto.StudentDto import StudentDto
-from app.model.dto.UserDto import UserDto
 from app.service.CompanyService import CompanyService
 from app.service.StudentService import StudentService
 
@@ -41,7 +40,7 @@ class UserController:
         @self.router.post("/user/student/login")
         async def student_login(login_dto: LoginDto) -> Student:
             try:
-                student_entity: Student = self.company_service.validate_login(login_dto)
+                student_entity: Student = self.student_service.validate_login(login_dto)
             except HTTPException as e:
                 raise e
 

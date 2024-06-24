@@ -27,15 +27,15 @@ CREATE TABLE job (
     job_id SERIAL PRIMARY KEY,
     description TEXT,
     company_name VARCHAR(255),
+    company_id SERIAL,
     job_name VARCHAR(255),
-    photo BYTEA,
-    FOREIGN KEY (company_name) REFERENCES users (login_credential)
+    FOREIGN KEY (company_id) REFERENCES company (company_id)
 );
 
 -- Create the Resume table
 CREATE TABLE resume (
     resume_id SERIAL PRIMARY KEY,
-    file_name VARCHAR(255),
+    description TEXT,
     student_id INT,
     FOREIGN KEY (student_id) REFERENCES student (student_id)
 );

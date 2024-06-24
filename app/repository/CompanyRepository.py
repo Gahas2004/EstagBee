@@ -9,7 +9,7 @@ from app.repository.BaseRepository import BaseRepository
 
 class CompanyRepository(BaseRepository):
 
-    def insert(self, entity: Company):
+    def insert(self, entity: Company) -> None:
         query = """
                 INSERT INTO company (company_id, document, website)
                 VALUES (%s, %s, %s);
@@ -25,19 +25,19 @@ class CompanyRepository(BaseRepository):
             self.conn.commit()
             super()._close_cursor()
 
-    def get_one(self, login_credential: str):
+    def get_one(self, login_credential: str) -> Company:
         query = """
                SELECT
                    u.id,
                    u.login_credential,
                    u.password,
                    u.name,
-                   s.RA,
-                   s.course
+                   c.document,
+                   c.website
                FROM
                    users u
                JOIN
-                   student s ON u.id = s.student_id
+                   company c ON u.id = c.company_id
                WHERE
                    u.login_credential = %s
                """
