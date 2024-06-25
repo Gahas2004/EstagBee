@@ -87,7 +87,7 @@ export default function NavBar({ setSearch, search, type }) {
 
       {type === "company" && (
         <List>
-          {[{ text: "Cadastrar vaga", link: "/starships" }].map((item, index) => (
+          {[{ text: "Cadastrar vaga", link: "/cadastrar-vaga" }].map((item, index) => (
             <ListItem key={index} disablePadding>
               <ListItemButton component={Link} to={item.link}>
                 <ListItemIcon>
