@@ -28,6 +28,8 @@ import {
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import WorkIcon from '@mui/icons-material/Work';
+import PersonIcon from '@mui/icons-material/Person';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 import { SearchInput } from "./styles";
 
@@ -87,7 +89,7 @@ export default function NavBar({ setSearch, search, type }) {
 
       {type === "company" && (
         <List>
-          {[{ text: "Cadastrar vaga", link: "/starships" }].map((item, index) => (
+          {[{ text: "Cadastrar vaga", link: "/cadastrar-vaga" }].map((item, index) => (
             <ListItem key={index} disablePadding>
               <ListItemButton component={Link} to={item.link}>
                 <ListItemIcon>
@@ -130,10 +132,10 @@ export default function NavBar({ setSearch, search, type }) {
       }
       <Divider />
       <List>
-        {[{ text: "Planets", link: "/planets" }].map((item, index) => (
+        {[{ text: "Perfil", link: "/profile" }].map((item, index) => (
           <ListItem key={index} disablePadding>
             <ListItemButton component={Link} to={item.link}>
-              <ListItemIcon>{index === 0 ? <PublicIcon /> : null}</ListItemIcon>
+              <ListItemIcon>{index === 0 ? <PersonIcon /> : null}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>
           </ListItem>
@@ -141,11 +143,11 @@ export default function NavBar({ setSearch, search, type }) {
       </List>
       <Divider />
       <List>
-        {[{ text: "Starships", link: "/starships" }].map((item, index) => (
+        {[{ text: "Sair", link: "/" }].map((item, index) => (
           <ListItem key={index} disablePadding>
             <ListItemButton component={Link} to={item.link}>
               <ListItemIcon>
-                {index === 0 ? <RocketLaunchIcon /> : null}
+                {index === 0 ? <ExitToAppIcon /> : null}
               </ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>

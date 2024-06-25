@@ -1,7 +1,7 @@
 import "./styles/App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Home } from "./pages/Home";
-import { Planets } from "./pages/Planets";
+import { Profile } from "./pages/Profile";
 import { Starships } from "./pages/Starships";
 import { Login } from "./pages/Login";
 import { SignUp } from "./pages/SignUp";
@@ -16,8 +16,7 @@ function Pages() {
         <Route path="/home" element={<Home />} />
         <Route path="/cadastrar-vaga" element={<CadastrarVaga />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/planets" element={<Planets />} />
-        <Route path="/planets/:id" element={<Planets />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/starships" element={<Starships />} />
         <Route path="/starships/:id" element={<Starships />} />
         <Route path="/job/:id" element={<JobConfirm/>} />
