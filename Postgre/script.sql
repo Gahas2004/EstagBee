@@ -40,6 +40,14 @@ CREATE TABLE resume (
     FOREIGN KEY (student_id) REFERENCES student (student_id)
 );
 
+CREATE TABLE application (
+    application_id SERIAL PRIMARY KEY,
+    job_id INT,
+    resume_id INT,
+    FOREIGN KEY (job_id) REFERENCES job (job_id),
+    FOREIGN KEY (resume_id) REFERENCES resume (resume_id)
+);
+
 
 -- useful queries:
 SELECT

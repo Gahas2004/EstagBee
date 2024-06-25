@@ -15,7 +15,7 @@ class ResumeRepository(BaseRepository):
 
         try:
             super()._open_cursor()
-            self.cursor.execute(query, (entity.student_id, entity.description))
+            self.cursor.execute(query, (entity.description, entity.student_id))
         except Exception as e:
             print(f"Erro: {e}")
             self.conn.rollback()
