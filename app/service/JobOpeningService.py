@@ -29,15 +29,24 @@ class JobOpeningService:
         entity_list: List = self._parse_tuples_to_dto(jobs)
         return entity_list
 
+    def get_job_by_id(self, job_id: int):
+        job = self.job_opening_repository.get_by_id(job_id)
+        return self._parse_job_tuple_to_dto(job)
+
     def _parse_tuples_to_dto(self, jobs_tuples) -> List:
         dtos = []
         for tpl in jobs_tuples:
-            dto = JobOpeningDto(
-                job_id=tpl[0],
-                description=tpl[1],
-                job_name=tpl[4],
-                company_id=tpl[3],
-                company_name=tpl[2]
-            )
+            dto = self._parse_job_tuple_to_dto(jobs_tuples)
             dtos.append(dto)
         return dtos
+
+    def _parse_job_tuple_to_dto(self, tpl):
+        dto = JobOpeningDto(
+            job_id=tpl[0],
+            description=tpl[1],
+            job_name=tpl[4],
+            company_id=tpl[3],
+            company_name=tpl[2]
+        )
+
+        return dto

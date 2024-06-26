@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 
 from app.model.JobOpening import JobOpening
 from app.model.dto.JobOpeningDto import JobOpeningDto
@@ -23,3 +23,9 @@ class JobOpeningController:
             jobs = self.job_opening_service.retrieve_all_job_openings()
 
             return jobs
+
+        @self.router.get("/job_opening/get_one")
+        async def get_all_job_openings(job_id: int = Query(...)):
+            job = self.job_opening_service.get_job_by_id(job_id)
+
+            return job
