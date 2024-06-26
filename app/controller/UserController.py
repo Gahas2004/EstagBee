@@ -45,3 +45,12 @@ class UserController:
                 raise e
 
             return student_entity
+
+        @self.router.post("/user/student/login")
+        async def student_login(login_dto: LoginDto) -> Student:
+            try:
+                student_entity: Student = self.student_service.validate_login(login_dto)
+            except HTTPException as e:
+                raise e
+
+            return student_entity

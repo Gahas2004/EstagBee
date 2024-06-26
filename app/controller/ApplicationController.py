@@ -21,7 +21,7 @@ class ApplicationController:
             return True
 
         @self.router.get("/job_opening/retrieve")
-        async def retrieve_all_job_applicants(job_id: int = Query(...)) -> bool:
+        async def retrieve_all_job_applicants(job_id: int = Query(...)):
             applications = self.application_service.retrieve_all_applicants_from_application(job_id)
 
             return applications
