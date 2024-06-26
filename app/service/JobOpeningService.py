@@ -36,7 +36,7 @@ class JobOpeningService:
     def _parse_tuples_to_dto(self, jobs_tuples) -> List:
         dtos = []
         for tpl in jobs_tuples:
-            dto = self._parse_job_tuple_to_dto(jobs_tuples)
+            dto = self._parse_job_tuple_to_dto(tpl)
             dtos.append(dto)
         return dtos
 
