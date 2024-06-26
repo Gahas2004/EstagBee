@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from typing import List, Tuple
 
 from app.model.JobOpening import JobOpening
 from app.model.dto.JobOpeningDto import JobOpeningDto
@@ -25,5 +25,19 @@ class JobOpeningService:
         return entity
 
     def retrieve_all_job_openings(self):
-        jobs = self.job_opening_repository.get_all()
-        return jobs
+        jobs: List[Tuple] = self.job_opening_repository.get_all()
+        entity_list: List = self._parse_tuples_to_dto(jobs)
+        return entity_list
+
+    def _parse_tuples_to_dto(self, jobs_tuples) -> List:
+        dtos = []
+        for tpl in jobs_tuples:
+            dto = JobOpeningDto(
+                job_id=tpl[0],
+                description=tpl[1],
+                job_name=tpl[2],
+                company_id=tpl[3],
+                company_name=tpl[4]
+            )
+            dtos.append(dto)
+        return dtos

@@ -21,4 +21,5 @@ class JobOpeningController:
         @self.router.get("/job_opening/get_all")
         async def get_all_job_openings():
             jobs = self.job_opening_service.retrieve_all_job_openings()
+
             return jobs
