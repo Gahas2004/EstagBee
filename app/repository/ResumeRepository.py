@@ -10,16 +10,20 @@ class ResumeRepository(BaseRepository):
     def insert(self, entity: Resume):
         query = """
                 INSERT INTO resume (description, student_id)
-                VALUES (%s, %s);
+                VALUES (%s, %s)
+                RETURNING resume_id;
                 """
 
+        id: int = None
         try:
             super()._open_cursor()
             self.cursor.execute(query, (entity.description, entity.student_id))
+            id = self.cursor.fetchone()[0]
         except Exception as e:
             print(f"Erro: {e}")
             self.conn.rollback()
         finally:
             self.conn.commit()
             super()._close_cursor()
-        pass
+
+        return id
