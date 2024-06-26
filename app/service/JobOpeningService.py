@@ -35,9 +35,9 @@ class JobOpeningService:
             dto = JobOpeningDto(
                 job_id=tpl[0],
                 description=tpl[1],
-                job_name=tpl[2],
+                job_name=tpl[4],
                 company_id=tpl[3],
-                company_name=tpl[4]
+                company_name=tpl[2]
             )
             dtos.append(dto)
         return dtos
