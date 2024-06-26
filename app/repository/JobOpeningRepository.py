@@ -50,3 +50,24 @@ class JobOpeningRepository(BaseRepository):
             super()._close_cursor()
 
         return jobs
+
+    def get_by_id(self, job_id: str):
+        query = """
+                SELECT * FROM job
+                WHERE job_id = %s
+                """
+
+        job = None
+
+        try:
+            super()._open_cursor()
+            self.cursor.execute(query, (job_id,))
+            job = self.cursor.fetchone()
+        except Exception as e:
+            print(f"Erro: {e}")
+            self.conn.rollback()
+        finally:
+            self.conn.commit()
+            super()._close_cursor()
+
+        return job
