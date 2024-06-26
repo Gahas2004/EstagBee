@@ -11,6 +11,7 @@ app = FastAPI()
 origins = [
     "http://localhost",
     "http://localhost:8080",
+    "http://localhost:3000"
     # Adicione aqui as origens permitidas
 ]
 
@@ -31,6 +32,10 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],  # Métodos permitidos
     allow_headers=["*"],  # Cabeçalhos permitidos
 )
+
+@app.options("/")  # Rota OPTIONS para Preflight
+async def preflight_route():
+    return {"message": "Preflight check successful"}
 
 if __name__ == "__main__":
     import uvicorn
