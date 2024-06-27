@@ -51,6 +51,39 @@ class JobOpeningRepository(BaseRepository):
 
         return jobs
 
+    def delete_one(self, job_id: int):
+        query = """ 
+                DELETE FROM job 
+                WHERE job_id = %s 
+                """
+
+        self._delete_dependent(job_id)
+        try:
+            super()._open_cursor()
+            self.cursor.execute(query, (job_id,))
+        except Exception as e:
+            print(f"Erro: {e}")
+            self.conn.rollback()
+        finally:
+            self.conn.commit()
+            super()._close_cursor()
+
+    def _delete_dependent(self, job_id: int):
+        query = """
+                DELETE FROM application 
+                WHERE job_id = 5;
+                """
+
+        try:
+            super()._open_cursor()
+            self.cursor.execute(query, (job_id,))
+        except Exception as e:
+            print(f"Erro: {e}")
+            self.conn.rollback()
+        finally:
+            self.conn.commit()
+            super()._close_cursor()
+
     def get_by_id(self, job_id: str):
         query = """
                 SELECT * FROM job

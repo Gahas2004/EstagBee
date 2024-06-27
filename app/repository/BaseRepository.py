@@ -13,7 +13,6 @@ class BaseRepository:
 
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
-            print("Created new database instance")
             cls._instance = super(BaseRepository, cls).__new__(cls)
         return cls._instance
 
@@ -26,7 +25,6 @@ class BaseRepository:
                 host=Constants.DB_HOST,
                 port=Constants.DB_PORT
             )
-            print(f"psycopg2 successfully connected to {Constants.DB_NAME}")
         except psycopg2.Error as e:
             print(f"psycopg2 failed to connect to {Constants.DB_NAME}: {e}")
 

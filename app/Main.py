@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
+from app import Constants
 from app.controller.ApplicationController import ApplicationController
 from app.controller.JobOpeningController import JobOpeningController
 from app.controller.ResumeController import ResumeController
@@ -40,4 +41,5 @@ async def preflight_route():
 if __name__ == "__main__":
     import uvicorn
 
+    print(f"psycopg2 successfully connected to {Constants.DB_NAME}")
     uvicorn.run(app, host="localhost", port=8000)

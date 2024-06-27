@@ -29,3 +29,9 @@ class JobOpeningController:
             job = self.job_opening_service.get_job_by_id(job_id)
 
             return job
+
+        @self.router.delete("/job_opening/delete")
+        async def get_all_job_openings(job_id: int = Query(...)):
+            self.job_opening_service.delete_job(job_id)
+
+            return "DELETED"

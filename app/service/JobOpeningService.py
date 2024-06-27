@@ -40,6 +40,10 @@ class JobOpeningService:
             dtos.append(dto)
         return dtos
 
+    def delete_job(self, job_id: int):
+        self.job_opening_repository.delete_one(job_id)
+
+
     def _parse_job_tuple_to_dto(self, tpl):
         dto = JobOpeningDto(
             job_id=tpl[0],
