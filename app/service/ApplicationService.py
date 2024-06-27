@@ -32,8 +32,8 @@ class ApplicationService:
 
     def _parse_application_tuple_to_dto(self, tpl):
         dto = ApplicationDto(
-            job_id=tpl[0],
-            resume_id=tpl[1],
+            job_id=tpl[1],
+            resume_id=tpl[0],
         )
 
         return dto
