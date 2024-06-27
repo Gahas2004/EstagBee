@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -19,13 +20,15 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Logo from '../../assets/images/logo.png';
 
 export function SignUp({type}) {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
+    const [name, setName] = useState('');
+    const [ra, setRa] = useState('');
+    const [course, setCourse] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const [firstNameError, setFirstNameError] = useState(false);
-    const [lastNameError, setLastNameError] = useState(false);
+    const [nameError, setNameError] = useState(false);
+    const [raError, setRaError] = useState(false);
+    const [courseError, setCourseError] = useState(false);
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
     const [emailErrorMessage, setEmailErrorMessage] = useState('');
@@ -33,39 +36,44 @@ export function SignUp({type}) {
     const navigate = useNavigate();
 
     const validateEmail = (email) => {
-        // Regex para validar email
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(email);
     };
 
     const validatePassword = (password) => {
-        // Regex para validar senha com pelo menos 6 caracteres, incluindo uma letra maiúscula
         const re = /^(?=.*[A-Z]).{6,}$/;
         return re.test(password);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        const firstNameValue = data.get('firstName');
-        const lastNameValue = data.get('lastName');
-        const emailValue = data.get('email');
+        const nameValue = data.get('name');
+        const raValue = data.get('ra');
+        const courseValue = data.get('course');
+        const emailValue = data.get('login_credential');
         const passwordValue = data.get('password');
 
         let valid = true;
 
-        if (!firstNameValue) {
-            setFirstNameError(true);
+        if (!nameValue) {
+            setNameError(true);
             valid = false;
         } else {
-            setFirstNameError(false);
+            setNameError(false);
+        }
+        if (!raValue) {
+            setRaError(true);
+            valid = false;
+        } else {
+            setRaError(false);
         }
 
-        if (!lastNameValue) {
-            setLastNameError(true);
+        if (!courseValue) {
+            setCourseError(true);
             valid = false;
         } else {
-            setLastNameError(false);
+            setCourseError(false);
         }
 
         if (!emailValue) {
@@ -95,19 +103,23 @@ export function SignUp({type}) {
         }
 
         if (valid) {
-            console.log({
-                firstName: firstNameValue,
-                lastName: lastNameValue,
-                email: emailValue,
-                password: passwordValue,
-                type: type
-            });
-            navigate('/home', { state: { type } });
+            try {
+                const response = await axios.post('http://localhost:8000/user/student/register', {
+                    name: nameValue,
+                    course: courseValue,
+                    login_credential: emailValue,
+                    password: passwordValue,
+                    ra: raValue
+                });
+                //colocar os valores no localstorage
+                navigate('/');
+            } catch (error) {
+                console.error('There was an error registering the student!', error);
+            }
         }
     };
 
     return (
-
         <Grid container justifyContent="center" sx={{ padding: "30px" }}>
             <Grid item style={{ textAlign: "center", padding: "20px" }}>
                 <img src={Logo} alt="Logo" />
@@ -123,37 +135,55 @@ export function SignUp({type}) {
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <TextField
-                            error={firstNameError}
-                            helperText={firstNameError ? 'First name is required' : ''}
+                            error={nameError}
+                            helperText={nameError ? 'Nome é obrigatório' : ''}
                             autoComplete="given-name"
-                            name="firstName"
+                            name="name"
                             required
                             fullWidth
-                            id="firstName"
-                            label="First Name"
+                            id="name"
+                            label="Nome do aluno"
                             autoFocus
-                            value={firstName}
+                            value={name}
                             onChange={(e) => {
-                                setFirstName(e.target.value);
-                                setFirstNameError(!e.target.value);
+                                setName(e.target.value);
+                                setNameError(!e.target.value);
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            error={raError}
+                            helperText={raError ? 'RA é obrigatório' : ''}
+                            autoComplete="given-name"
+                            name="ra"
+                            required
+                            fullWidth
+                            id="ra"
+                            label="Registro Acadêmico"
+                            autoFocus
+                            value={ra}
+                            onChange={(e) => {
+                                setRa(e.target.value);
+                                setRaError(!e.target.value);
                             }}
                         />
                     </Grid>
 
                     <Grid item xs={12}>
                         <TextField
-                            error={lastNameError}
-                            helperText={lastNameError ? 'Last name is required' : ''}
+                            error={courseError}
+                            helperText={courseError ? 'Curso é obrigatório' : ''}
                             required
                             fullWidth
-                            id="lastName"
-                            label="Last Name"
-                            name="lastName"
+                            id="course"
+                            label="Curso"
+                            name="course"
                             autoComplete="family-name"
-                            value={lastName}
+                            value={course}
                             onChange={(e) => {
-                                setLastName(e.target.value);
-                                setLastNameError(!e.target.value);
+                                setCourse(e.target.value);
+                                setCourseError(!e.target.value);
                             }}
                         />
                     </Grid>
@@ -164,9 +194,9 @@ export function SignUp({type}) {
                             helperText={emailError ? emailErrorMessage : ''}
                             required
                             fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
+                            id="login_credential"
+                            label="Email"
+                            name="login_credential"
                             autoComplete="email"
                             value={email}
                             onChange={(e) => {
@@ -188,7 +218,7 @@ export function SignUp({type}) {
                             required
                             fullWidth
                             name="password"
-                            label="Password"
+                            label="Senha"
                             type={showPassword ? 'text' : 'password'}
                             id="password"
                             autoComplete="new-password"
@@ -249,11 +279,7 @@ export function SignUp({type}) {
                     Already have an account? Sign in
                 </Link>
             </Grid>
-
         </Grid>
-
-
-
     );
 }
 

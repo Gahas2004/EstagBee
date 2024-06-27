@@ -1,58 +1,38 @@
 import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../components/NavBar/index.jsx";
 import ResultCard from "../components/ResultCard/index-people.jsx";
-import { Box, Grid, Pagination, Typography } from "@mui/material";
+import { Box, Grid, Pagination, Typography, CircularProgress } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { grey } from '@mui/material/colors';
-import { useLocation } from 'react-router-dom';
 
 export const Home = () => {
-  const [characters, setCharacters] = useState([]);
-  const [selectedCharacter, setSelectedCharacter] = useState(null);
+  const [jobOpenings, setJobOpenings] = useState([]);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [totalPages, setTotalPages] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const debounceTimeout = useRef(null);
+  const userType = localStorage.getItem('userType');
 
-  const location = useLocation();
-  const type = location.state?.type;
-
-  const calcPagination = (count, length) => {
-    if (page === 1) {
-      const totalPages = Math.ceil(count / length);
-      setTotalPages(totalPages);
-    }
+  const calcPagination = (totalJobs) => {
+    const totalPages = Math.ceil(totalJobs / 10); // Assumindo 10 vagas por página
+    setTotalPages(totalPages);
   };
 
-  const getCharacters = async (search) => {
+  const getJobOpenings = async (search, currentPage) => {
     try {
-      setLoading(true);
-      if (!!search && search.length > 0) {
-        const params = `?search=${search}${page === 1 ? "" : `&page=${page}`} `;
-        const { data } = await axios.get(
-          `https://swapi.dev/api/people/${params}`
-        );
-        setCharacters(data.results);
-        calcPagination(data.count, data.results.length);
-      } else {
-        if (page === 1) {
-          const { data } = await axios.get("https://swapi.dev/api/people/");
-          setCharacters(data.results);
-          calcPagination(data.count, data.results.length);
-        } else {
-          const { data } = await axios.get(
-            `https://swapi.dev/api/people/?page=${page}`
-          );
-          setCharacters(data.results);
-        }
-      }
+      setIsLoading(true);
+      const params = `?page=${currentPage}&search=${search}`;
+      const { data } = await axios.get(`http://localhost:8000/job_opening/get_all`);
+      setJobOpenings(data || []); // Adicione uma verificação para jobOpenings
+      calcPagination(data.totalJobs || 0); // Adicione uma verificação para totalJobs
+      console.log(data);
     } catch (error) {
-      console.log(error);
+      console.error('Erro ao buscar vagas:', error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -63,32 +43,28 @@ export const Home = () => {
       clearTimeout(debounceTimeout.current);
     }
     debounceTimeout.current = setTimeout(() => {
-      getCharacters(value);
+      getJobOpenings(value, 1);
     }, 1000);
   };
 
   const handlePageChange = (page) => {
     setPage(page);
+    getJobOpenings(search, page);
   };
 
-  const handleGoToHomeWorld = (homeWorldUrl) => {
-    const id = homeWorldUrl.split("/")[5];
-    navigate(`/job/`);
-  };
-
-  const handleGoToStarships = (starship) => {
-    const id = starship.split("/")[5];
-    navigate(`/starships/${id}`);
+  const handleViewDetails = (jobId) => {
+    navigate(`/job/${jobId}`);
   };
 
   useEffect(() => {
-    getCharacters(search);
+    getJobOpenings(search, page);
   }, [page]);
 
+  console.log(jobOpenings);
   return (
     <div style={{ background: grey[100] }}>
       <Grid container>
-        <Navbar setSearch={handleSearch} search={search} type={type} />
+        <Navbar setSearch={handleSearch} search={search} type={userType} />
       </Grid>
       <Grid container spacing={2}>
         <Grid item xs={12}>
@@ -96,40 +72,29 @@ export const Home = () => {
             Vagas disponíveis
           </Typography>
         </Grid>
-        {characters.map((character, index) => (
-          <ResultCard
-            type={type}
-            key={index}
-            name={character.name}
-            gender={character.gender}
-            height={character.height}
-            onClick={() => {
-              setSelectedCharacter(character)
-              window.open(`/job/${index + 1}`, '_blank');
-            }}
-            loading={loading}
-          />
-
-        ))}
+        {
+          isLoading ? (
+            <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
+              <CircularProgress />
+            </Grid>
+          ) : (
+            jobOpenings.map((job, index) => (
+              <ResultCard
+                key={index}
+                name={job.company_name}
+                subtitle={job.job_name}
+                description={job.description}
+                onClick={() => handleViewDetails(job.job_id)}
+              />
+            ))
+          )
+        }
       </Grid>
-
-      <Box
-        style={{
-          width: "100%",
-          height: "fit-content",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: "20px",
-        }}
-      >
-        <Pagination
-          sx={{ width: "FitScreen" }}
-          count={totalPages}
-          page={page}
-          onChange={(event, page) => handlePageChange(page)}
-        />
-      </Box>
+      <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
+        <Pagination count={totalPages} page={page} onChange={(e, value) => handlePageChange(value)} />
+      </Grid>
     </div>
   );
 };
+
+export default Home;

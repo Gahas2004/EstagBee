@@ -18,14 +18,7 @@ import {
   ListItemText,
   Grid
 } from "@mui/material";
-import {
-  Menu as MenuIcon,
-  EmojiPeople as EmojiPeopleIcon,
-  Public as PublicIcon,
-  RocketLaunch as RocketLaunchIcon,
-  Search as SearchIcon,
-} from "@mui/icons-material";
-
+import {Menu as MenuIcon, Search as SearchIcon,} from "@mui/icons-material";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import WorkIcon from '@mui/icons-material/Work';
 import PersonIcon from '@mui/icons-material/Person';
@@ -33,14 +26,15 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 import { SearchInput } from "./styles";
 
-export default function NavBar({ setSearch, search, type }) {
+export default function NavBar({ setSearch, search}) {
   const [isScrolled, setIsScrolled] = useState(false);
   const isMobile = useMediaQuery("(max-width:600px)");
   const [state, setState] = React.useState({
     left: false,
     searchOpen: false,
   });
-
+  const userType = localStorage.getItem('userType');
+  
   const handleReloadPage = () => {
     window.location.href = "/home"; // Altera a localização para a rota inicial
   };
@@ -79,6 +73,11 @@ export default function NavBar({ setSearch, search, type }) {
     setState({ ...state, searchOpen: false });
   };
 
+  const handleLogout = () => {
+    localStorage.clear(); // Limpa todo o localStorage
+    // Redireciona o usuário para o link especificado
+  };
+
   const list = (anchor) => (
     <Box
       sx={{ width: 250 }}
@@ -87,9 +86,9 @@ export default function NavBar({ setSearch, search, type }) {
       onKeyDown={toggleDrawer(anchor, false)}
     >
 
-      {type === "company" && (
+      {userType === "company" && (
         <List>
-          {[{ text: "Cadastrar vaga", link: "/cadastrar-vaga" }].map((item, index) => (
+          {[{ text: "Cadastrar vaga", link: "/create-job" }].map((item, index) => (
             <ListItem key={index} disablePadding>
               <ListItemButton component={Link} to={item.link}>
                 <ListItemIcon>
@@ -103,7 +102,7 @@ export default function NavBar({ setSearch, search, type }) {
       )
       }
       <Divider />
-      {type === "company" ?
+      {userType === "company" ?
         <List>
           {[{ text: "Vagas Ofertadas", link: "/home" }].map((item, index) => (
             <ListItem key={index} disablePadding>
@@ -131,8 +130,9 @@ export default function NavBar({ setSearch, search, type }) {
         </List>
       }
       <Divider />
+      {userType === "student" && (
       <List>
-        {[{ text: "Perfil", link: "/profile" }].map((item, index) => (
+        {[{ text: "Criar um currículo", link: "/create-resume" }].map((item, index) => (
           <ListItem key={index} disablePadding>
             <ListItemButton component={Link} to={item.link}>
               <ListItemIcon>{index === 0 ? <PersonIcon /> : null}</ListItemIcon>
@@ -141,11 +141,12 @@ export default function NavBar({ setSearch, search, type }) {
           </ListItem>
         ))}
       </List>
+      )}
       <Divider />
       <List>
         {[{ text: "Sair", link: "/" }].map((item, index) => (
           <ListItem key={index} disablePadding>
-            <ListItemButton component={Link} to={item.link}>
+            <ListItemButton component={Link} to={item.link} onClick={handleLogout}>
               <ListItemIcon>
                 {index === 0 ? <ExitToAppIcon /> : null}
               </ListItemIcon>
@@ -193,49 +194,12 @@ export default function NavBar({ setSearch, search, type }) {
                 component="div"
                 sx={{ flexGrow: 1, display: { xs: "flex", sm: "flex" }, fontFamily: 'Poppins', fontWeight: "bold" }}
               >
-                {type === 'student' ? 'Estagbee Student' : 'Estagbee Company'}
+                {userType === 'student' ? 'Estagbee Student' : 'Estagbee Company'}
               </Typography>
             </Link>
-            {console.log(type)}
-
-            {isMobile ?
-              <IconButton
-                size="large"
-                edge="end"
-                color="inherit"
-                aria-label="open search"
-                sx={{ ml: 2 }}
-                onClick={handleSearchToggle}
-                style={{ marginLeft: "auto" }}
-              >
-                <SearchIcon />
-              </IconButton>
-              :
-              <SearchInput
-                icon={<SearchIcon />}
-                style={{ marginLeft: "auto" }}
-                placeholder="Pesquisar"
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            }
           </Toolbar>
         </AppBar>
       </Grid>
-      {isMobile &&
-        <Drawer
-          anchor="top"
-          open={state.searchOpen}
-          onClose={handleCloseSearch}
-        >
-          <Toolbar>
-            <SearchInput
-              icon={<SearchIcon />}
-              placeholder="Pesquisar"
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </Toolbar>
-        </Drawer>
-      }
     </Grid>
   );
 }
