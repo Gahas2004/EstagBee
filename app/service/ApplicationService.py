@@ -34,7 +34,8 @@ class ApplicationService:
         dto = ApplicationDto(
             job_id=tpl[1],
             resume_id=tpl[2],
-            description=tpl[3]
+            description=tpl[3],
+            name=tpl[4]
         )
 
         return dto

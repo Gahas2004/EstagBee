@@ -22,10 +22,22 @@ class ApplicationRepository(BaseRepository):
 
     def get_all_by_job_id(self, job_id: int):
         query = """
-                SELECT application.*, job.description
-                FROM application
-                JOIN job ON application.job_id = job.job_id
-                WHERE application.job_id = %s;
+                SELECT 
+                    application.*, 
+                    resume.description AS resume_description, 
+                    users.name AS applicant_name
+                FROM 
+                    application
+                JOIN 
+                    job ON application.job_id = job.job_id
+                JOIN 
+                    resume ON application.resume_id = resume.resume_id
+                JOIN 
+                    student ON resume.student_id = student.student_id
+                JOIN 
+                    users ON student.student_id = users.id
+                WHERE 
+                    application.job_id = %s;
                 """
         applications = None
         try:
