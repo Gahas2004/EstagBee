@@ -46,7 +46,7 @@ export function Login() {
                             color: '#fff'
                         }}
                     >
-                        student
+                        Estudante
                     </Button>
                     <Button
                         onClick={() => handleButtonClick('company')}
@@ -55,7 +55,7 @@ export function Login() {
                             color: '#fff'
                         }}
                     >
-                        company
+                        Empresa
                     </Button>
                 </ButtonGroup>
             </Grid>

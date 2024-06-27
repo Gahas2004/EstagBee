@@ -81,11 +81,11 @@ export function SignUp({type}) {
 
         if (!emailValue) {
             setEmailError(true);
-            setEmailErrorMessage('Email is required');
+            setEmailErrorMessage('Email é obrigatório');
             valid = false;
         } else if (!validateEmail(emailValue)) {
             setEmailError(true);
-            setEmailErrorMessage('Invalid email address');
+            setEmailErrorMessage('Email inválido');
             valid = false;
         } else {
             setEmailError(false);
@@ -94,11 +94,11 @@ export function SignUp({type}) {
 
         if (!passwordValue) {
             setPasswordError(true);
-            setPasswordErrorMessage('Password is required');
+            setPasswordErrorMessage('Senha é obrigatória');
             valid = false;
         } else if (!validatePassword(passwordValue)) {
             setPasswordError(true);
-            setPasswordErrorMessage('Password must be at least 6 characters and include an uppercase letter');
+            setPasswordErrorMessage('A senha deve ter pelo menos 6 caracteres e incluir uma letra maiúscula');
             valid = false;
         } else {
             setPasswordError(false);
@@ -195,7 +195,7 @@ export function SignUp({type}) {
                             required
                             fullWidth
                             id="login_credential"
-                            label="Email Address"
+                            label="Email"
                             name="login_credential"
                             autoComplete="email"
                             value={email}
@@ -203,7 +203,7 @@ export function SignUp({type}) {
                                 setEmail(e.target.value);
                                 if (emailError) {
                                     setEmailError(!validateEmail(e.target.value));
-                                    setEmailErrorMessage('Invalid email address');
+                                    setEmailErrorMessage('Email Inválido');
                                 } else {
                                     setEmailErrorMessage('');
                                 }
@@ -218,7 +218,7 @@ export function SignUp({type}) {
                             required
                             fullWidth
                             name="password"
-                            label="Password"
+                            label="Senha"
                             type={showPassword ? 'text' : 'password'}
                             id="password"
                             autoComplete="new-password"
@@ -227,7 +227,7 @@ export function SignUp({type}) {
                                 setPassword(e.target.value);
                                 if (passwordError) {
                                     setPasswordError(!validatePassword(e.target.value));
-                                    setPasswordErrorMessage('Password must be at least 6 characters and include an uppercase letter');
+                                    setPasswordErrorMessage('A senha deve ter pelo menos 6 caracteres e incluir uma letra maiúscula');
                                 } else {
                                     setPasswordErrorMessage('');
                                 }
@@ -251,7 +251,7 @@ export function SignUp({type}) {
                     <Grid item xs={12}>
                         <FormControlLabel
                             control={<Checkbox value="allowExtraEmails" color="primary" />}
-                            label="I want to receive inspiration, marketing promotions and updates via email."
+                            label="Quero receber notificações por e-mail."
                         />
                     </Grid>
 
@@ -269,7 +269,7 @@ export function SignUp({type}) {
                             }}
                             onClick={() => localStorage.setItem('userType', type)}
                         >
-                            Sign Up
+                            Cadastrar
                         </Button>
                     </Grid>
                 </Grid>
@@ -277,7 +277,7 @@ export function SignUp({type}) {
 
             <Grid item xs={8} style={{ textAlign:"right", marginTop: "10px" }}>
                 <Link href="/" variant="body2">
-                    Already have an account? Sign in
+                    Já tem uma conta? Faça login    
                 </Link>
             </Grid>
 
