@@ -194,7 +194,7 @@ export default function NavBar({ setSearch, search}) {
                 component="div"
                 sx={{ flexGrow: 1, display: { xs: "flex", sm: "flex" }, fontFamily: 'Poppins', fontWeight: "bold" }}
               >
-                {userType === 'student' ? 'Estagbee Student' : 'Estagbee Company'}
+                {userType === 'student' ? 'Estagbee Estudante' : 'Estagbee Empresa'}
               </Typography>
             </Link>
           </Toolbar>

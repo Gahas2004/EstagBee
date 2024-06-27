@@ -1,6 +1,5 @@
 # EstagBee
 
-:construction: Projeto em construção :construction:
 
 ### Projeto
 O Projeto EstagBee visa desenvolver uma plataforma online para facilitar o processo de busca e candidatura a vagas de estágio para os alunos da Universidade Tecnológica Federal do Paraná (UTFPR). A plataforma permitirá que os estudantes da instituição se cadastrem nela, pesquisem e se candidatem a vagas de estágio de acordo com suas áreas de interesse e competências que atendam aos requisitos contidos nelas. Além disso, empresas poderão cadastrar suas vagas de estágio para divulgá-las, gerenciar as candidaturas recebidas, avaliar os candidatos e realizar a comunicação durante o processo de seleção.
@@ -60,10 +59,3 @@ Para utilizar este projeto, siga os passos abaixo:
 
 Após a instalação, abra o navegador e acesse [http://localhost:3000](http://localhost:3000) para visualizar a aplicação.
 
-- Selecione um personagem que estiver aparecendo na sua tela ou utilize a barra de pesquisa na parte superior para buscar personagens.
-- Clique em um personagem para ver detalhes, incluindo informações sobre sua homeworld e starships.
-
-## 🛠️ Construído com
-
-* [React](https://react.dev/)
-* [Material UI](https://mui.com/)

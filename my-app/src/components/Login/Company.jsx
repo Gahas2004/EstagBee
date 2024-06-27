@@ -49,7 +49,7 @@ export function Login({ type }) {
             valid = false;
         } else if (!validateEmail(email)) {
             setEmailError(true);
-            setEmailErrorMessage('Invalid email address');
+            setEmailErrorMessage('Email invalido');
             valid = false;
         } else {
             setEmailError(false);
@@ -58,11 +58,11 @@ export function Login({ type }) {
 
         if (!password) {
             setPasswordError(true);
-            setPasswordErrorMessage('Password is required');
+            setPasswordErrorMessage('Senha é obrigatório');
             valid = false;
         } else if (!validatePassword(password)) {
             setPasswordError(true);
-            setPasswordErrorMessage('Password must be at least 6 characters and include an uppercase letter');
+            setPasswordErrorMessage('A senha deve ter pelo menos 6 caracteres e incluir uma letra maiúscula');
             valid = false;
         } else {
             setPasswordError(false);
@@ -108,7 +108,7 @@ export function Login({ type }) {
                             required
                             fullWidth
                             id="login_credential"
-                            label="Email Address"
+                            label="Email"
                             name="login_credential"
                             autoComplete="email"
                             autoFocus
@@ -129,7 +129,7 @@ export function Login({ type }) {
                             required
                             fullWidth
                             name="password"
-                            label="Password"
+                            label="Senha"
                             type={showPassword ? 'text' : 'password'}
                             id="password"
                             autoComplete="new-password"
@@ -138,7 +138,7 @@ export function Login({ type }) {
                                 setPassword(e.target.value);
                                 if (passwordError) {
                                     setPasswordError(!validatePassword(e.target.value));
-                                    setPasswordErrorMessage('Password must be at least 6 characters and include an uppercase letter');
+                                    setPasswordErrorMessage('A senha deve ter pelo menos 6 caracteres e incluir uma letra maiúscula');
                                 } else {
                                     setPasswordErrorMessage('');
                                 }
@@ -162,7 +162,7 @@ export function Login({ type }) {
                     <Grid item xs={12}>
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
+                            label="Lembrar Login"
                         />
                     </Grid>
 
@@ -179,7 +179,7 @@ export function Login({ type }) {
                             }}
                             onClick={localStorage.setItem('userType', type)}
                         >
-                            Sign In
+                            Entrar
                         </Button>
                     </Grid>
                 </Grid>
@@ -187,12 +187,12 @@ export function Login({ type }) {
                 <Grid container spacing={2} sx={{ marginTop: '10px' }}>
                     <Grid item xs={6}>
                         <Link href="#" variant="body2">
-                            Forgot password?
+                            Esqueceu a senha?
                         </Link>
                     </Grid>
                     <Grid item xs={6} style={{ textAlign: 'right' }}>
                         <Link href="/signup" variant="body2">
-                            {"Don't have an account? Sign Up"}
+                            {"Não tem uma conta? Cadastre-se"}
                         </Link>
                     </Grid>
                 </Grid>
