@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importar useNavigate
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios'; // Importar Axios
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -17,7 +18,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import Logo from '../../assets/images/logo.png';
 
-export function Login({type}) {
+export function Login({ type }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState(false);
@@ -25,73 +26,62 @@ export function Login({type}) {
     const [showPassword, setShowPassword] = useState(false);
     const [emailErrorMessage, setEmailErrorMessage] = useState('');
     const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
-    const navigate = useNavigate(); // Usar useNavigate
+    const navigate = useNavigate();
 
     const validateEmail = (email) => {
-        // Regex para validar email
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(email);
     };
 
     const validatePassword = (password) => {
-        // Regex para validar senha com pelo menos 6 caracteres, incluindo uma letra maiúscula
         const re = /^(?=.*[A-Z]).{6,}$/;
         return re.test(password);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        const emailValue = data.get('email');
-        const passwordValue = data.get('password');
 
-        let valid = true;
-
-        if (!emailValue) {
+        if (!validateEmail(email)) {
             setEmailError(true);
-            setEmailErrorMessage('Email is required');
-            valid = false;
-        } else if (!validateEmail(emailValue)) {
-            setEmailError(true);
-            setEmailErrorMessage('Invalid email address');
-            valid = false;
+            setEmailErrorMessage('Email invalido');
+            return;
         } else {
             setEmailError(false);
             setEmailErrorMessage('');
         }
 
-        if (!passwordValue) {
+        if (!validatePassword(password)) {
             setPasswordError(true);
-            setPasswordErrorMessage('Password is required');
-            valid = false;
-        } else if (!validatePassword(passwordValue)) {
-            setPasswordError(true);
-            setPasswordErrorMessage('Password must be at least 6 characters and include an uppercase letter');
-            valid = false;
+            setPasswordErrorMessage('A senha deve ter pelo menos 6 caracteres e incluir uma letra maiúscula');
+            return;
         } else {
             setPasswordError(false);
             setPasswordErrorMessage('');
         }
 
-        if (valid) {
-            console.log({
-                email: emailValue,
-                password: passwordValue,
-                type: type
+        try {
+            const response = await axios.post('http://localhost:8000/user/student/login', {
+                login_credential: email,
+                password: password,
             });
-            navigate('/home', { state: { type } }); // Redirecionar para /home
+            localStorage.setItem('student_id', response.data.id);
+            localStorage.setItem('student_name', response.data.name);
+            // Navigate to '/home'
+            navigate('/home', { state: { type } });
+        } catch (error) {
+            console.error('Error logging in:', error);
+            // Handle error states as needed (e.g., show error messages)
         }
     };
 
     return (
-
-        <Grid container justifyContent="center" sx={{ padding: "30px" }}>
-            <Grid item style={{ textAlign: "center", padding: "20px" }}>
+        <Grid container justifyContent="center" sx={{ padding: '30px' }}>
+            <Grid item style={{ textAlign: 'center', padding: '20px' }}>
                 <img src={Logo} alt="Logo" />
             </Grid>
 
-            <Grid item xs={12} style={{ marginBottom: "15px" }}>
-                <Typography component="h1" variant="h5" style={{ textAlign: "center", padding: "10px", fontFamily: "Poppins", fontWeight: "bold" }}>
+            <Grid item xs={12} style={{ marginBottom: '15px' }}>
+                <Typography component="h1" variant="h5" style={{ textAlign: 'center', padding: '10px', fontFamily: 'Poppins', fontWeight: 'bold' }}>
                     Bem-vindo(a) ao Estagbee
                 </Typography>
             </Grid>
@@ -104,9 +94,9 @@ export function Login({type}) {
                             helperText={emailError ? emailErrorMessage : ''}
                             required
                             fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
+                            id="login_credential"
+                            label="Email"
+                            name="login_credential"
                             autoComplete="email"
                             autoFocus
                             value={email}
@@ -126,7 +116,7 @@ export function Login({type}) {
                             required
                             fullWidth
                             name="password"
-                            label="Password"
+                            label="Senha"
                             type={showPassword ? 'text' : 'password'}
                             id="password"
                             autoComplete="new-password"
@@ -135,7 +125,7 @@ export function Login({type}) {
                                 setPassword(e.target.value);
                                 if (passwordError) {
                                     setPasswordError(!validatePassword(e.target.value));
-                                    setPasswordErrorMessage('Password must be at least 6 characters and include an uppercase letter');
+                                    setPasswordErrorMessage('A senha deve ter pelo menos 6 caracteres e incluir uma letra maiúscula');
                                 } else {
                                     setPasswordErrorMessage('');
                                 }
@@ -157,10 +147,7 @@ export function Login({type}) {
                     </Grid>
 
                     <Grid item xs={12}>
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
-                        />
+                        <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Lembrar Login" />
                     </Grid>
 
                     <Grid item xs={12}>
@@ -171,11 +158,12 @@ export function Login({type}) {
                             sx={{
                                 backgroundColor: '#F6BA04',
                                 '&:hover': {
-                                    backgroundColor: '#F6A204', // cor ao passar o mouse
-                                }
+                                    backgroundColor: '#F6A204',
+                                },
                             }}
+                            onClick={localStorage.setItem('userType', type)}
                         >
-                            Sign In
+                            Entrar
                         </Button>
                     </Grid>
                 </Grid>
@@ -183,19 +171,17 @@ export function Login({type}) {
                 <Grid container spacing={2} sx={{ marginTop: '10px' }}>
                     <Grid item xs={6}>
                         <Link href="#" variant="body2">
-                            Forgot password?
+                            Esqueceu a senha?
                         </Link>
                     </Grid>
-                    <Grid item xs={6} style={{ textAlign: "right" }}>
+                    <Grid item xs={6} style={{ textAlign: 'right' }}>
                         <Link href="/signup" variant="body2">
-                            {"Don't have an account? Sign Up"}
+                            {"Não tem uma conta? Cadastre-se"}
                         </Link>
                     </Grid>
                 </Grid>
             </Box>
         </Grid>
-
-
     );
 }
 

@@ -16,7 +16,8 @@ export function Profile() {
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
 
   const [course, setCourse] = useState(""); // Estado para o campo de curso
-
+  const userType = localStorage.getItem('userType');
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);

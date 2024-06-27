@@ -17,7 +17,11 @@ import Shirae from '../../assets/images/shirae.jpeg'; // Importação correta da
 import Button from '@mui/material/Button';
 import { Grid } from '@mui/material';
 
-export default function ResultCard({ name, gender, height, onClick, type }) {
+export default function ResultCard({ name, subtitle, onClick, type, description }) {
+
+  //tratar nome pos esta vindo com aspas
+  name = name.replace(/['"]+/g, '');
+
   return (
     <Grid item xs={12} style={{
       display: "flex",
@@ -42,13 +46,13 @@ export default function ResultCard({ name, gender, height, onClick, type }) {
             </IconButton>
           }
           title={<Typography variant="body2" component="span" sx={{ fontWeight: 'bold', color: yellow[800] }}>
-            {name} publicou uma nova vaga!
+            {name} publicou uma nova vaga!  
           </Typography>}
-          subheader={<Typography variant="body2" component="div">Estágio em sistemas embarcados (Remoto)</Typography>}
+          subheader={<Typography variant="body2" component="div">{subtitle}</Typography>}
         />
         <CardContent style={{ padding: '0px 16px' }}>
           <Typography variant="body2">
-            A Microsoft está em busca de um estagiário dinâmico e comprometido para se juntar à equipe.
+            <div dangerouslySetInnerHTML={{ __html: description }} />
           </Typography>
         </CardContent>
         <CardMedia
@@ -87,7 +91,7 @@ export default function ResultCard({ name, gender, height, onClick, type }) {
                 }
               }}
                 onClick={onClick}
-              >Candidaturas
+              >Ver sobre a vaga
               </Button>
             </div>
           }

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -19,11 +20,15 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Logo from '../../assets/images/logo.png';
 
 export function SignUp({type}) {
-    const [companyName, setcompanyName] = useState('');
+    const [companyName, setCompanyName] = useState('');
+    const [document, setDocument] = useState('');
+    const [website, setWebsite] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const [companyNameError, setcompanyNameError] = useState(false);
+    const [companyNameError, setCompanyNameError] = useState(false);
+    const [documentError, setDocumentError] = useState(false);
+    const [websiteError, setWebsiteError] = useState(false);
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
     const [emailErrorMessage, setEmailErrorMessage] = useState('');
@@ -42,29 +47,45 @@ export function SignUp({type}) {
         return re.test(password);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        const companyNameValue = data.get('companyName');
-        const emailValue = data.get('email');
+        const companyNameValue = data.get('name');
+        const documentValue = data.get('document');
+        const websiteValue = data.get('website');
+        const emailValue = data.get('login_credential');
         const passwordValue = data.get('password');
 
         let valid = true;
 
         if (!companyNameValue) {
-            setcompanyNameError(true);
+            setCompanyNameError(true);
             valid = false;
         } else {
-            setcompanyNameError(false);
+            setCompanyNameError(false);
+        }
+
+        if (!documentValue) {
+            setDocumentError(true);
+            valid = false;
+        } else {
+            setDocumentError(false);
+        }
+
+        if (!websiteValue) {
+            setWebsiteError(true);
+            valid = false;
+        } else {
+            setWebsiteError(false);
         }
 
         if (!emailValue) {
             setEmailError(true);
-            setEmailErrorMessage('Email is required');
+            setEmailErrorMessage('Email é obrigatório');
             valid = false;
         } else if (!validateEmail(emailValue)) {
             setEmailError(true);
-            setEmailErrorMessage('Invalid email address');
+            setEmailErrorMessage('Email inválido');
             valid = false;
         } else {
             setEmailError(false);
@@ -73,11 +94,11 @@ export function SignUp({type}) {
 
         if (!passwordValue) {
             setPasswordError(true);
-            setPasswordErrorMessage('Password is required');
+            setPasswordErrorMessage('Senha é obrigatória');
             valid = false;
         } else if (!validatePassword(passwordValue)) {
             setPasswordError(true);
-            setPasswordErrorMessage('Password must be at least 6 characters and include an uppercase letter');
+            setPasswordErrorMessage('A senha deve ter pelo menos 6 caracteres e incluir uma letra maiúscula');
             valid = false;
         } else {
             setPasswordError(false);
@@ -85,13 +106,19 @@ export function SignUp({type}) {
         }
 
         if (valid) {
-            console.log({
-                companyName: companyNameValue,
-                email: emailValue,
-                password: passwordValue,
-                type: type
-            });
-            navigate('/home', { state: { type } });
+            try {
+                const response = await axios.post('http://localhost:8000/user/company/register', {
+                    name: companyNameValue,
+                    document: documentValue,
+                    website: websiteValue,
+                    login_credential: emailValue,
+                    password: passwordValue
+                });
+                //guardar no local storage
+                navigate('/');
+            } catch (error) {
+                console.error('There was an error registering the company!', error);
+            }
         }
     };
 
@@ -112,18 +139,51 @@ export function SignUp({type}) {
                     <Grid item xs={12}>
                         <TextField
                             error={companyNameError}
-                            helperText={companyNameError ? 'Name is required' : ''}
+                            helperText={companyNameError ? 'Nome da empresa é obrigatório' : ''}
                             autoComplete="given-name"
-                            name="companyName"
+                            name="name"
                             required
                             fullWidth
-                            id="companyName"
-                            label="Name of the company"
+                            id="name"
+                            label="Nome da empresa"
                             autoFocus
                             value={companyName}
                             onChange={(e) => {
-                                setcompanyName(e.target.value);
-                                setcompanyNameError(!e.target.value);
+                                setCompanyName(e.target.value);
+                                setCompanyNameError(!e.target.value);
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            error={documentError}
+                            helperText={documentError ? 'CNPJ é obrigatório' : ''}
+                            name="document"
+                            required
+                            fullWidth
+                            id="document"
+                            label="CNPJ da empresa"
+                            value={document}
+                            onChange={(e) => {
+                                setDocument(e.target.value);
+                                setDocumentError(!e.target.value);
+                            }}
+                        />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <TextField
+                            error={websiteError}
+                            helperText={websiteError ? 'Site é obrigatório' : ''}
+                            name="website"
+                            required
+                            fullWidth
+                            id="website"
+                            label="Site da empresa"
+                            value={website}
+                            onChange={(e) => {
+                                setWebsite(e.target.value);
+                                setWebsiteError(!e.target.value);
                             }}
                         />
                     </Grid>
@@ -134,16 +194,16 @@ export function SignUp({type}) {
                             helperText={emailError ? emailErrorMessage : ''}
                             required
                             fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
+                            id="login_credential"
+                            label="Email"
+                            name="login_credential"
                             autoComplete="email"
                             value={email}
                             onChange={(e) => {
                                 setEmail(e.target.value);
                                 if (emailError) {
                                     setEmailError(!validateEmail(e.target.value));
-                                    setEmailErrorMessage('Invalid email address');
+                                    setEmailErrorMessage('Email Inválido');
                                 } else {
                                     setEmailErrorMessage('');
                                 }
@@ -158,7 +218,7 @@ export function SignUp({type}) {
                             required
                             fullWidth
                             name="password"
-                            label="Password"
+                            label="Senha"
                             type={showPassword ? 'text' : 'password'}
                             id="password"
                             autoComplete="new-password"
@@ -167,7 +227,7 @@ export function SignUp({type}) {
                                 setPassword(e.target.value);
                                 if (passwordError) {
                                     setPasswordError(!validatePassword(e.target.value));
-                                    setPasswordErrorMessage('Password must be at least 6 characters and include an uppercase letter');
+                                    setPasswordErrorMessage('A senha deve ter pelo menos 6 caracteres e incluir uma letra maiúscula');
                                 } else {
                                     setPasswordErrorMessage('');
                                 }
@@ -191,7 +251,7 @@ export function SignUp({type}) {
                     <Grid item xs={12}>
                         <FormControlLabel
                             control={<Checkbox value="allowExtraEmails" color="primary" />}
-                            label="I want to receive inspiration, marketing promotions and updates via email."
+                            label="Quero receber notificações por e-mail."
                         />
                     </Grid>
 
@@ -207,8 +267,9 @@ export function SignUp({type}) {
                                     backgroundColor: '#F6A204', // cor ao passar o mouse
                                 }
                             }}
+                            onClick={() => localStorage.setItem('userType', type)}
                         >
-                            Sign Up
+                            Cadastrar
                         </Button>
                     </Grid>
                 </Grid>
@@ -216,14 +277,11 @@ export function SignUp({type}) {
 
             <Grid item xs={8} style={{ textAlign:"right", marginTop: "10px" }}>
                 <Link href="/" variant="body2">
-                    Already have an account? Sign in
+                    Já tem uma conta? Faça login    
                 </Link>
             </Grid>
 
         </Grid>
-
-
-
     );
 }
 

@@ -6,7 +6,8 @@ import { Starships } from "./pages/Starships";
 import { Login } from "./pages/Login";
 import { SignUp } from "./pages/SignUp";
 import { JobConfirm } from "./pages/JobConfirm";
-import { CadastrarVaga } from "./pages/CadastrarVaga";
+import { CreateJob } from "./pages/CreateJob";
+import { CreateResume } from "./pages/CreateResume";
 
 function Pages() {
   return (
@@ -14,12 +15,11 @@ function Pages() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/cadastrar-vaga" element={<CadastrarVaga />} />
+        <Route path="/create-job" element={<CreateJob />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/starships" element={<Starships />} />
-        <Route path="/starships/:id" element={<Starships />} />
         <Route path="/job/:id" element={<JobConfirm/>} />
+        <Route path="/create-resume" element={<CreateResume/>} />
         <Route
           path="*"
           element={

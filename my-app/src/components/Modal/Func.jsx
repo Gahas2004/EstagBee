@@ -44,7 +44,7 @@ const TransitionsModal = ({
     /* style */
     modalStyle = { display: 'flex', alignItems: 'center', justifyContent: 'center' },
     wrapperStyle = { maxWidth: '1024px', minWidth: '300px', maxHeight: '90vh' },
-    contentStyle = { padding: '24px 16px' },
+    contentStyle = { padding: '24px 16px', overflow:"scroll"},
 }) => {
     if (!content) throw new Error('Content is required');
     if (button && icon) console.warn('Icon will be ignored');
