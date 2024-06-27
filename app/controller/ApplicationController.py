@@ -15,10 +15,10 @@ class ApplicationController:
 
     def _setup_routes(self):
         @self.router.post("/job_opening/apply")
-        async def apply_to_job(application_dto: ApplicationDto) -> bool:
+        async def apply_to_job(application_dto: ApplicationDto):
             application: Application = self.application_service.apply_resume_to_job_id(application_dto)
 
-            return True
+            return application
 
         @self.router.get("/job_opening/retrieve")
         async def retrieve_all_job_applicants(job_id: int = Query(...)):
