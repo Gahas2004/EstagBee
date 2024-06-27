@@ -161,7 +161,6 @@ export function SignUp({type}) {
                             fullWidth
                             id="ra"
                             label="Registro Acadêmico"
-                            autoFocus
                             value={ra}
                             onChange={(e) => {
                                 setRa(e.target.value);

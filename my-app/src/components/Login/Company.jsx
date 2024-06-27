@@ -147,7 +147,6 @@ export function Login({ type }) {
                                 endAdornment: (
                                     <InputAdornment position="end">
                                         <IconButton
-                                            aria-label="toggle password visibility"
                                             onClick={() => setShowPassword(!showPassword)}
                                             edge="end"
                                         >
