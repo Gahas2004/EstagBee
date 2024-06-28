@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../components/NavBar/index.jsx";
-import ResultCard from "../components/ResultCard/index-people.jsx";
-import { Box, Grid, Pagination, Typography, CircularProgress } from "@mui/material";
+import ResultCard from "../components/ResultCard/ResultCard.jsx";
+import { Grid, Pagination, Typography, CircularProgress } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { grey } from '@mui/material/colors';
@@ -62,38 +62,56 @@ export const Home = () => {
 
   console.log(jobOpenings);
   return (
-    <div style={{ background: grey[100] }}>
-      <Grid container>
-        <Navbar setSearch={handleSearch} search={search} type={userType} />
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Typography variant="title-lg" style={{ marginTop: "1rem", marginLeft: "40px", fontSize: "2rem", fontFamily: "Poppins", fontWeight: "bold", color: "#F6BA04" }}>
-            Vagas disponíveis
-          </Typography>
-        </Grid>
-        {
-          isLoading ? (
-            <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
-              <CircularProgress />
+    <>
+      {
+        jobOpenings.length > 0 ?
+          <div style={{ background: grey[100] }}>
+            <Grid container>
+              <Navbar setSearch={handleSearch} search={search} type={userType} />
             </Grid>
-          ) : (
-            jobOpenings.map((job, index) => (
-              <ResultCard
-                key={index}
-                name={job.company_name}
-                subtitle={job.job_name}
-                description={job.description}
-                onClick={() => handleViewDetails(job.job_id)}
-              />
-            ))
-          )
-        }
-      </Grid>
-      <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
-        <Pagination count={totalPages} page={page} onChange={(e, value) => handlePageChange(value)} />
-      </Grid>
-    </div>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Typography variant="title-lg" style={{ marginTop: "1rem", marginLeft: "40px", fontSize: "2rem", fontFamily: "Poppins", fontWeight: "bold", color: "#F6BA04" }}>
+                  Vagas disponíveis
+                </Typography>
+              </Grid>
+              {
+                isLoading ? (
+                  <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
+                    <CircularProgress />
+                  </Grid>
+                ) : (
+                  jobOpenings.map((job, index) => (
+                    <ResultCard
+                      key={index}
+                      name={job.company_name}
+                      subtitle={job.job_name}
+                      description={job.description}
+                      onClick={() => handleViewDetails(job.job_id)}
+                    />
+                  ))
+                )
+              }
+            </Grid>
+            <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
+              <Pagination count={totalPages} page={page} onChange={(e, value) => handlePageChange(value)} />
+            </Grid>
+          </div>
+          :
+          <div style={{ background: grey[100] }}>
+            <Grid container>
+              <Navbar setSearch={handleSearch} search={search} type={userType} />
+            </Grid>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Typography variant="title-lg" style={{ marginTop: "1rem", marginLeft: "40px", fontSize: "2rem", fontFamily: "Poppins", fontWeight: "bold", color: "#F6BA04" }}>
+                  Nenhuma vaga encontrada
+                </Typography>
+              </Grid>
+            </Grid>
+          </div>
+      }
+    </>
   );
 };
 

@@ -26,6 +26,7 @@ export function Login({ type }) {
     const [showPassword, setShowPassword] = useState(false);
     const [emailErrorMessage, setEmailErrorMessage] = useState('');
     const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+    const [loginErrorMessage, setLoginErrorMessage] = useState('');
     const navigate = useNavigate();
 
     const validateEmail = (email) => {
@@ -78,11 +79,12 @@ export function Login({ type }) {
 
                 localStorage.setItem('company_id', JSON.stringify(response.data.id));
                 localStorage.setItem('company_name', JSON.stringify(response.data.name));
+                localStorage.setItem('userType', type);
 
                 navigate('/home', { state: { type } });
             } catch (error) {
                 console.error('Error logging in:', error);
-                // Tratar erro de login aqui, se necessário
+                setLoginErrorMessage('Usuário/senha inválidos');
             }
         }
     };
@@ -176,11 +178,18 @@ export function Login({ type }) {
                                     backgroundColor: '#F6A204',
                                 }
                             }}
-                            onClick={localStorage.setItem('userType', type)}
                         >
                             Entrar
                         </Button>
                     </Grid>
+
+                    {loginErrorMessage && (
+                        <Grid item xs={12}>
+                            <Typography color="error" align="center">
+                                {loginErrorMessage}
+                            </Typography>
+                        </Grid>
+                    )}
                 </Grid>
 
                 <Grid container spacing={2} sx={{ marginTop: '10px' }}>
