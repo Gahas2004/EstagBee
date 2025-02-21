@@ -20,7 +20,7 @@ class UserRepository(BaseRepository):
             self.cursor.execute(query, (user.login_credential, user.password, user.name))
             id = self.cursor.fetchone()[0]
         except Exception as e:
-            print(f"Erro: {e}")
+            print(f"Error: {e}")
             self.conn.rollback()
         finally:
             self.conn.commit()

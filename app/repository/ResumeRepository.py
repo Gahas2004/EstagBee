@@ -20,7 +20,7 @@ class ResumeRepository(BaseRepository):
             self.cursor.execute(query, (entity.description, entity.student_id))
             id = self.cursor.fetchone()[0]
         except Exception as e:
-            print(f"Erro: {e}")
+            print(f"Error: {e}")
             self.conn.rollback()
         finally:
             self.conn.commit()

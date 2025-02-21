@@ -23,7 +23,7 @@ class JobOpeningRepository(BaseRepository):
                                         entity.job_name))
             id = self.cursor.fetchone()[0]
         except Exception as e:
-            print(f"Erro: {e}")
+            print(f"Error: {e}")
             self.conn.rollback()
         finally:
             self.conn.commit()
@@ -43,7 +43,7 @@ class JobOpeningRepository(BaseRepository):
             self.cursor.execute(query)
             jobs = self.cursor.fetchall()
         except Exception as e:
-            print(f"Erro: {e}")
+            print(f"Error: {e}")
             self.conn.rollback()
         finally:
             self.conn.commit()
@@ -62,7 +62,7 @@ class JobOpeningRepository(BaseRepository):
             super()._open_cursor()
             self.cursor.execute(query, (job_id,))
         except Exception as e:
-            print(f"Erro: {e}")
+            print(f"Error: {e}")
             self.conn.rollback()
         finally:
             self.conn.commit()
@@ -78,7 +78,7 @@ class JobOpeningRepository(BaseRepository):
             super()._open_cursor()
             self.cursor.execute(query, (job_id,))
         except Exception as e:
-            print(f"Erro: {e}")
+            print(f"Error: {e}")
             self.conn.rollback()
         finally:
             self.conn.commit()
@@ -97,7 +97,7 @@ class JobOpeningRepository(BaseRepository):
             self.cursor.execute(query, (job_id,))
             job = self.cursor.fetchone()
         except Exception as e:
-            print(f"Erro: {e}")
+            print(f"Error: {e}")
             self.conn.rollback()
         finally:
             self.conn.commit()

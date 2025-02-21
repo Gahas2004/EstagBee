@@ -18,7 +18,7 @@ class StudentRepository(BaseRepository):
             super()._open_cursor()
             self.cursor.execute(query, (entity.id, entity.ra, entity.course))
         except Exception as e:
-            print(f"Erro: {e}")
+            print(f"Error: {e}")
             self.conn.rollback()
             raise Exception
         finally:
@@ -55,7 +55,7 @@ class StudentRepository(BaseRepository):
             result = entity
 
         except Exception as e:
-            print(f"Erro: {e}")
+            print(f"Error: {e}")
             self.conn.rollback()
 
             if isinstance(e, HTTPException):

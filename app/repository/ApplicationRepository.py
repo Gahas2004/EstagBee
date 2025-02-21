@@ -45,7 +45,7 @@ class ApplicationRepository(BaseRepository):
             self.cursor.execute(query, (job_id,))
             applications = self.cursor.fetchall()
         except Exception as e:
-            print(f"Erro: {e}")
+            print(f"Error: {e}")
             self.conn.rollback()
         finally:
             self.conn.commit()

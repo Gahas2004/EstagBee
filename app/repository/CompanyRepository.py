@@ -19,7 +19,7 @@ class CompanyRepository(BaseRepository):
             super()._open_cursor()
             self.cursor.execute(query, (entity.id, entity.document, entity.website))
         except Exception as e:
-            print(f"Erro: {e}")
+            print(f"Error: {e}")
             self.conn.rollback()
         finally:
             self.conn.commit()
@@ -55,7 +55,7 @@ class CompanyRepository(BaseRepository):
             result = entity
 
         except Exception as e:
-            print(f"Erro: {e}")
+            print(f"Error: {e}")
             self.conn.rollback()
 
             if isinstance(e, HTTPException):
