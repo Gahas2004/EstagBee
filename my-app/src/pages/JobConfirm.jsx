@@ -127,6 +127,7 @@ export function JobConfirm() {
 
 const EnviarDocumentos = (props) => {
     const [successMessage, setSuccessMessage] = useState(""); // Adicionando estado para mensagem de sucesso
+    const [errorMessage, setErrormessage] = useState(""); // Adicionando estado para mensagem de sucesso
 
     const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -144,11 +145,11 @@ const EnviarDocumentos = (props) => {
 
             console.log('Resposta do servidor:', response.data);
             setSuccessMessage("Candidatura efetuada com sucesso!");
-
             await sleep(2000);
             props.handleClose();
         } catch (error) {
             console.error('Erro interno do servidor:', error);
+            setErrormessage("Você não possui um currículo cadastrado, por favor, cadastre um currículo para se candidatar a uma vaga.");
         }
 
     };
@@ -188,6 +189,15 @@ const EnviarDocumentos = (props) => {
                         Enviar currículo
                     </Button>
                 </Grid>
+                {
+                    errorMessage && ( // Exibe a mensagem de erro se ela estiver definida
+                        <Grid item xs={12}>
+                            <Typography variant="body1" style={{ color: "red" }}>
+                                {errorMessage}
+                            </Typography>
+                        </Grid>
+                    )
+                }
             </Grid>
         </Box>
     );
@@ -197,7 +207,7 @@ const VerCandidatos = (props) => {
 
     const [job, setJob] = useState([]); // Adicionando estado para mensagem de sucesso
     const [loading, setLoading] = useState(false);
-
+    const navigate = useNavigate();
     const getJobApplicants = async () => {
         try {
             setLoading(true);
@@ -210,6 +220,19 @@ const VerCandidatos = (props) => {
         }
     };
 
+    const deleteJob = async () => {
+        try {
+            setLoading(true);
+            const { data } = await axios.delete(`http://localhost:8000/job_opening/delete?job_id=${props.job_id}`);
+            setJob(data);
+            navigate('/home');
+        } catch (error) {
+            console.error("Error:", error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     useEffect(() => {
         getJobApplicants();
     }, []);
@@ -217,6 +240,25 @@ const VerCandidatos = (props) => {
     return (
 
         <Grid container spacing={2}>
+
+            {/* gerar botão de cancelar a vaga */}
+            <Grid item xs={12} style={{ display: 'flex', flexDirection: 'column', marginTop: '1rem', }}>
+                <Button variant="outlined" sx={{
+                    color: '#F6BA04',
+                    '&:hover': {
+                        color: '#e6a503',
+                        borderColor: '#F6BA04',
+                    },
+                    borderColor: '#F6BA04',
+                }}
+                    onClick={() => {
+                        deleteJob();
+                    }}
+                >
+                    Cancelar vaga
+                </Button>
+            </Grid>
+
             <Grid item xs={12}>
                 <Typography variant="h6" style={{ marginTop: "1rem", fontSize: "2rem", fontFamily: "Poppins", fontWeight: "bold", color: "#F6BA04" }}>
                     {job.length == 0 ? 'Não há aplicações' : 'Lista de candidatos para esta vaga.'}

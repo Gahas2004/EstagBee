@@ -89,7 +89,6 @@ export const CreateResume = () => {
                                 }
                             }}
                             style={{ marginTop: "10px" }}
-                            onClick={() => navigate('/home')}
                         >
                             Cadastrar
                         </Button>

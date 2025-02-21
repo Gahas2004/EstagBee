@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; // Importar Axios
+import axios from 'axios';
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -26,6 +26,7 @@ export function Login({ type }) {
     const [showPassword, setShowPassword] = useState(false);
     const [emailErrorMessage, setEmailErrorMessage] = useState('');
     const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+    const [loginErrorMessage, setLoginErrorMessage] = useState('');
     const navigate = useNavigate();
 
     const validateEmail = (email) => {
@@ -43,7 +44,7 @@ export function Login({ type }) {
 
         if (!validateEmail(email)) {
             setEmailError(true);
-            setEmailErrorMessage('Email invalido');
+            setEmailErrorMessage('Email inválido');
             return;
         } else {
             setEmailError(false);
@@ -66,11 +67,11 @@ export function Login({ type }) {
             });
             localStorage.setItem('student_id', response.data.id);
             localStorage.setItem('student_name', response.data.name);
-            // Navigate to '/home'
+            localStorage.setItem('userType', type);
             navigate('/home', { state: { type } });
         } catch (error) {
             console.error('Error logging in:', error);
-            // Handle error states as needed (e.g., show error messages)
+            setLoginErrorMessage('Usuário/senha inválidos');
         }
     };
 
@@ -161,11 +162,18 @@ export function Login({ type }) {
                                     backgroundColor: '#F6A204',
                                 },
                             }}
-                            onClick={localStorage.setItem('userType', type)}
                         >
                             Entrar
                         </Button>
                     </Grid>
+
+                    {loginErrorMessage && (
+                        <Grid item xs={12}>
+                            <Typography color="error" align="center">
+                                {loginErrorMessage}
+                            </Typography>
+                        </Grid>
+                    )}
                 </Grid>
 
                 <Grid container spacing={2} sx={{ marginTop: '10px' }}>

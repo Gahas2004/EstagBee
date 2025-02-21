@@ -40,22 +40,75 @@ Para utilizar este projeto, siga os passos abaixo:
 2. Navegue até o diretório do projeto:
 
     ```bash
-    cd my-app
+    cd EstagBee
     ```
 
-3. Instale as dependências utilizando o npm:
+3. Instale as dependências do Node.js utilizando o npm:
 
     ```bash
+    cd my-app
     npm install
     ```
 
-4. Inicie o servidor local:
+4. Inicie o servidor local do frontend:
 
     ```bash
     npm start
     ```
 
-## Como Usar
+5. Instale as dependências do Python utilizando o pip:
 
-Após a instalação, abra o navegador e acesse [http://localhost:3000](http://localhost:3000) para visualizar a aplicação.
+    ```bash
+    cd ..
+    pip install -r requirements.txt
+    ```
+
+6. Inicie o serviço do PostgreSQL e crie o banco de dados `estagbee`:
+
+    - Inicie o serviço do PostgreSQL. O método pode variar dependendo do seu sistema operacional.
+
+    - Conecte-se ao PostgreSQL via terminal:
+
+        ```bash
+        psql -U seu_usuario
+        ```
+
+    - Dentro do PostgreSQL, crie o banco de dados `estagbee`:
+
+        ```sql
+        CREATE DATABASE estagbee;
+        ```
+
+7. Verifique as configurações do PostgreSQL no arquivo `Constants.py`:
+
+    - Abra o arquivo `Constants.py` localizado no diretório raiz do projeto.
+
+    - Verifique se as configurações de conexão com o PostgreSQL estão corretamente definidas, como nome de usuário, senha, host e nome do banco de dados.
+
+8. Execute o script de criação de tabelas no banco de dados `estagbee`:
+
+    - Acesse o arquivo `script.sql` localizado na pasta `postgres`:
+
+        ```bash
+        cd postgres
+        ```
+
+    - Conecte-se ao seu banco de dados PostgreSQL e execute o conteúdo do arquivo `script.sql` para criar as tabelas necessárias:
+
+        ```bash
+        psql -U seu_usuario -d estagbee -f script.sql
+        ```
+
+    Substitua `seu_usuario` pelo seu nome de usuário do PostgreSQL.
+
+9. Inicie o servidor local do backend:
+
+    ```bash
+    cd ..
+    python main.py
+    ```
+
+Após seguir esses passos, o frontend será acessível em `http://localhost:3000` e o backend estará rodando em `http://localhost:8000`. Certifique-se de que as configurações do backend estão corretas para se comunicar com o banco de dados PostgreSQL.
+
+
 

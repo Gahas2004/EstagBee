@@ -71,7 +71,7 @@ class JobOpeningRepository(BaseRepository):
     def _delete_dependent(self, job_id: int):
         query = """
                 DELETE FROM application 
-                WHERE job_id = 5;
+                WHERE job_id = %s;
                 """
 
         try:
